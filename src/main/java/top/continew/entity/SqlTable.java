@@ -1,4 +1,4 @@
-package top.continew.vo;
+package top.continew.entity;
 
 import java.io.Serializable;
 import lombok.Data;

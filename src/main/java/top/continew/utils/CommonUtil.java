@@ -115,4 +115,32 @@ public class CommonUtil {
 			return value.substring(0, 2) + "**" + value.substring(length - 2);
 		}
 	}
+
+	public static String type2JavaType(String type) {
+		if (type.equals("int") || type.equals("integer") || type.equals("tinyint") || type.equals("smallint") || type.equals("mediumint")) {
+			return "Integer";
+		} else if (type.equals("bigint")) {
+			return "Long";
+		} else if (type.equals("varchar") || type.equals("char") || type.equals("text")
+				|| type.equals("longtext") || type.equals("enum") || type.equals("set")
+				|| type.equals("json") || type.equals("geometry") || type.equals("point") || type.equals("linestring")
+				|| type.equals("polygon") || type.equals("multipoint") || type.equals(
+				"multilinestring") || type.equals("multipolygon") || type.equals("geometrycollection")) {
+			return "String";
+		} else if (type.equals("datetime") || type.equals("timestamp") || type.equals("date") || type.equals("time") || type.equals("year")) {
+			return "Date";
+		} else if (type.equals("decimal")) {
+			return "BigDecimal";
+		} else if (type.equals("float")) {
+			return "Float";
+		} else if (type.equals("double")) {
+			return "Double";
+		} else if (type.equals("binary") || type.equals("blob") || type.equals("longblob") || type.equals("mediumblob") || type.equals("tinyblob") || type.equals("varbinary")) {
+			return "byte[]";
+		} else if (type.equals("bit")) {
+			return "Boolean";
+		} else {
+			return "未知类型：" + type;
+		}
+	}
 }

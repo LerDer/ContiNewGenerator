@@ -5,11 +5,8 @@ import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -24,7 +21,7 @@ import top.continew.utils.DataSourceUtils.ListHandler;
 import top.continew.utils.FileChooseUtils;
 import top.continew.utils.NotificationUtil;
 import top.continew.utils.PluginIconsUtils;
-import top.continew.vo.SqlTable;
+import top.continew.entity.SqlTable;
 
 /**
  * @author lww
