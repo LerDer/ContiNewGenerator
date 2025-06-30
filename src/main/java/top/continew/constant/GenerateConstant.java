@@ -98,4 +98,8 @@ public interface GenerateConstant {
 
 	Boolean menuBackend = true;
 
+	String formExcludeFields = "id,createUser,createTime,updateUser,updateTime";
+	String requiredExcludeFields = "id,createUser,createTime,updateUser,updateTime,description";
+	String queryExcludeFields = "createUser,createTime,updateUser,updateTime,description";
+	
 }

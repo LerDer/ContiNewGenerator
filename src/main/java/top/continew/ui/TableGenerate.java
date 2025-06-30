@@ -5,6 +5,7 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.vfs.VirtualFile;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.Action;
 import javax.swing.JComponent;
@@ -15,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableModel;
+import top.continew.constant.GenerateConstant;
 import top.continew.entity.SqlColumn;
 import top.continew.utils.DataSourceUtils;
 
@@ -43,7 +45,7 @@ public class TableGenerate extends DialogWrapper {
         this.init();
         columnTable.setDoubleBuffered(true);
         String tableName = "";
-        String[][] data = {};
+        Object[][] data = {};
         if (selectedItem != null) {
             if (selectedItem.toString().indexOf(" - ") > 0) {
                 tableName = selectedItem.toString().split(" - ")[0];
@@ -51,9 +53,9 @@ public class TableGenerate extends DialogWrapper {
                 tableName = selectedItem.toString();
             }
             List<SqlColumn> columns = DataSourceUtils.getSqlTablesColumns(project, vf, tableName);
-            data = new String[columns.size()][];
+            data = new Object[columns.size()][];
             for (SqlColumn column : columns) {
-                String[] row = new String[columnList.length];
+                Object[] row = new Object[columnList.length];
                 //序号
                 row[0] = String.valueOf(column.getOrdinalPosition());
                 //名称
@@ -67,13 +69,25 @@ public class TableGenerate extends DialogWrapper {
                 //描述
                 row[5] = column.getColumnComment();
                 //列表
-                row[6] = "是";
+                row[6] = Boolean.TRUE; // 设置为CheckBox
                 //表单
-                row[7] = "是";
+                if (Arrays.asList(GenerateConstant.formExcludeFields.split(",")).contains(column.getJavaField())) {
+                    row[7] = Boolean.FALSE;
+                } else {
+                    row[7] = Boolean.TRUE;
+                }
                 //必填
-                row[8] = column.isNULLAble() ? "是" : "否";
+                if (Arrays.asList(GenerateConstant.requiredExcludeFields.split(",")).contains(column.getJavaField())) {
+                    row[8] = Boolean.FALSE;
+                } else {
+                    row[8] = Boolean.TRUE;
+                }
                 //查询
-                row[9] = "是";
+                if (Arrays.asList(GenerateConstant.queryExcludeFields.split(",")).contains(column.getJavaField())) {
+                    row[9] = Boolean.FALSE;
+                } else {
+                    row[9] = Boolean.TRUE;
+                }
                 //表单类型
                 row[10] = "文本框"; // TODO
                 //查询方式
@@ -84,9 +98,16 @@ public class TableGenerate extends DialogWrapper {
             }
         }
         // 创建表格模型
-        DefaultTableModel model = new DefaultTableModel(data, columnList);
+        DefaultTableModel model = new DefaultTableModel(data, columnList) {
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                if (columnIndex == 6 || columnIndex == 7 || columnIndex == 8 || columnIndex == 9) {
+                    return Boolean.class;
+                }
+                return super.getColumnClass(columnIndex);
+            }
+        };
         columnTable.setModel(model);
-        System.out.println("selectedItem = " + selectedItem);
     }
 
     @Override
