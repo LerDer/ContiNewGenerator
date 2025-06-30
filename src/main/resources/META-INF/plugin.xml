@@ -27,7 +27,9 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
+        <notificationGroup id="ContiNewGenerator.NotificationGroup" displayType="BALLOON"/>
         <projectService serviceImplementation="top.continew.persistent.ContiNewGeneratorPersistent"/>
+
     </extensions>
     <actions>
         <action id="t.c.ContiNewGenerator"
