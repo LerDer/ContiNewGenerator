@@ -10,8 +10,7 @@ public class ContiNewGenerator extends AnAction {
 	@Override
 	public void actionPerformed(AnActionEvent e) {
 		Project project = e.getProject();
-		//YamlConfigReader.printDbConfig(project);
-		MainGenerator instance = MainGenerator.getInstance(project);
+		MainGenerator instance = new MainGenerator(project);
 		instance.show();
 	}
 }

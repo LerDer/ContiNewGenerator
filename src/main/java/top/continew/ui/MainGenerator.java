@@ -3,11 +3,11 @@ package top.continew.ui;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -15,11 +15,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import org.apache.commons.lang3.StringUtils;
-import org.jetbrains.annotations.Nullable;
 import top.continew.persistent.ContiNewGeneratorPersistent;
 import top.continew.utils.DataSourceUtils;
+import top.continew.utils.DataSourceUtils.ListHandler;
 import top.continew.utils.FileChooseUtils;
+import top.continew.utils.NotificationUtil;
 import top.continew.utils.PluginIconsUtils;
+import top.continew.vo.SqlTable;
 
 /**
  * @author lww
@@ -53,16 +55,7 @@ public class MainGenerator extends DialogWrapper {
 	private JButton configFilePathButton;
 	private JLabel configFilePathLabel;
 
-	private static MainGenerator instance = null;
-
-	public static MainGenerator getInstance(Project project) {
-		if (instance == null) {
-			instance = new MainGenerator(project);
-		}
-		return instance;
-	}
-
-	protected MainGenerator(Project project) {
+	public MainGenerator(Project project) {
 		super(project);
 		setTitle("ContiNew Generator");
 		setModal(true);
@@ -111,25 +104,36 @@ public class MainGenerator extends DialogWrapper {
 		configFilePathButton.addActionListener(e -> {
 			FileChooseUtils uiComponentFacade = FileChooseUtils.getInstance(project);
 			VirtualFile baseDir = null;
-			if (project != null) {
-				baseDir = ProjectUtil.guessProjectDir(project);
+			baseDir = ProjectUtil.guessProjectDir(project);
+			String text = configFilePathTextField.getText();
+			if (StringUtils.isNotEmpty(text)) {
+				File file = new File(text);
+				File parentFile = file.getParentFile();
+				if (parentFile != null && parentFile.exists()) {
+					baseDir = LocalFileSystem.getInstance().findFileByIoFile(parentFile);
+				}
 			}
 			final VirtualFile vf = uiComponentFacade.showSingleFileSelectionDialog("选择配置文件", baseDir, baseDir);
 			if (null != vf) {
 				String path = vf.getPath();
 				this.configFilePathTextField.setText(path);
 				instance.setConfigPath(path);
-				try {
-					HikariConfig config = DataSourceUtils.getDataSourceConfig(project, vf);
-					HikariDataSource dataSource = new HikariDataSource(config);
-					System.out.println("DB Connection Success!");
-					Connection connection = dataSource.getConnection();
-					System.out.println("DB Connection: " + connection);
-				} catch (SQLException ex) {
-					throw new RuntimeException(ex);
+				DataSourceUtils.initDataSource(project, vf);
+				String sql = "SELECT TABLE_NAME,TABLE_COMMENT FROM INFORMATION_SCHEMA.`TABLES` WHERE TABLE_SCHEMA = ?";
+				ListHandler<SqlTable> handler = new ListHandler<>(SqlTable.class);
+				List<SqlTable> sqlTables = DataSourceUtils.executeQuery(sql, handler, DataSourceUtils.getDbName());
+				if (sqlTables == null) {
+					NotificationUtil.showWarningNotification("查询表失败", "查询表失败结果为空");
+					return;
 				}
+				List<String> tables = sqlTables
+						.stream()
+						.map(SqlTable::getTableName)
+						.distinct()
+						.collect(Collectors.toList());
+				tableNameTextField.getComboKeyHandler().setList(tables);
+				tableNameTextField.repaint();
 			}
-
 		});
 		selectPathButton.setIcon(PluginIconsUtils.projectStructure);
 		selectPathButton.addActionListener(e -> {
@@ -152,7 +156,7 @@ public class MainGenerator extends DialogWrapper {
 	}
 
 	@Override
-	protected @Nullable JComponent createCenterPanel() {
+	protected JComponent createCenterPanel() {
 		return rootPanel;
 	}
 
