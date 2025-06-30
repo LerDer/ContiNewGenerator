@@ -5,6 +5,8 @@ import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -141,6 +143,17 @@ public class MainGenerator extends DialogWrapper {
 		cancelButton.setIcon(PluginIconsUtils.testFailed);
 		cancelButton.addActionListener(e -> dispose());
 
+		nextButton.addActionListener(e -> {
+			instance.setProjectPath(projectPathTextField.getText());
+			instance.setConfigPath(configFilePathTextField.getText());
+			instance.setAuthor(authorTextField.getText());
+			instance.setPackageName(packageNameTextField.getText());
+			instance.setTablePrefix(tablePrefixTextField.getText());
+			instance.setVersion(versionTextField.getText());
+			instance.setCreateDate(createTimeTextField.getText());
+			instance.setUpdateDate(updateTimeTextField.getText());
+			instance.setLogicalDelete(logicDeleteTextField.getText());
+		});
 	}
 
 	private void fillTableSelect(Project project, VirtualFile vf) {
