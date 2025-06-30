@@ -27,6 +27,16 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-
+        <projectService serviceImplementation="top.continew.persistent.ContiNewGeneratorPersistent"/>
     </extensions>
+    <actions>
+        <action id="t.c.ContiNewGenerator"
+                class="top.continew.action.ContiNewGenerator"
+                text="ContiNew代码生成器"
+                description="ContiNew代码生成器"
+                icon="/icons/logo.svg">
+            <add-to-group group-id="ToolsMenu" anchor="first"/>
+            <add-to-group group-id="MainToolBar" anchor="last"/>
+        </action>
+    </actions>
 </idea-plugin>

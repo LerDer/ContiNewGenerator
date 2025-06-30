@@ -42,11 +42,6 @@ dependencies {
     compileOnly("org.projectlombok:lombok:1.18.24")
     annotationProcessor("org.projectlombok:lombok:1.18.24")
 //    implementation("com.oracl:ojdbc6:11.2.0.3")
-    implementation("com.oracle.database.jdbc:ojdbc6:11.2.0.4")
-    implementation("org.xerial:sqlite-jdbc:3.49.1.0")
-    implementation("org.postgresql:postgresql:42.7.7")
-    implementation("com.microsoft.sqlserver:mssql-jdbc:11.2.3.jre17")
-    implementation("org.mariadb.jdbc:mariadb-java-client:3.5.3")
 //    implementation("com.h2database:h2:2.2.224")
 //    implementation("com.ibm.db2:jcc:11.5.8.0")
 //    implementation("cn.hutool:hutool-all:5.8.26")
@@ -63,8 +58,6 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.12.0")
     implementation("log4j:log4j:1.2.17")
     implementation("com.alibaba:fastjson:1.2.83")
-    implementation("com.fifesoft:rsyntaxtextarea:3.3.3")
-    implementation("org.dhatim:fastexcel:0.19.0")
 }
 
 tasks {
