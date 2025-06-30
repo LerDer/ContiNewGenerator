@@ -107,6 +107,13 @@ public class TableGenerate extends DialogWrapper {
                 return super.getColumnClass(columnIndex);
             }
         };
+        MyHeaderRenderer headerRenderer = new MyHeaderRenderer();
+        columnTable.getTableHeader().setDefaultRenderer(headerRenderer);
+        MyCellRenderer renderer = new MyCellRenderer();
+        for (int n = 0; n < columnTable.getColumnCount(); n++) {
+            columnTable.getColumnModel().getColumn(n).setCellRenderer(renderer);
+        }
+        columnTable.getTableHeader().repaint();
         columnTable.setModel(model);
     }
 
