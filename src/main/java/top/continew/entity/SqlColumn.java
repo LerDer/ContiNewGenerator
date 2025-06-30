@@ -17,8 +17,6 @@ import top.continew.utils.CommonUtil;
  * @since 2021-04-02
  */
 @Data
-@EqualsAndHashCode(callSuper = false)
-@Accessors(chain = true)
 public class SqlColumn implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -31,7 +29,7 @@ public class SqlColumn implements Serializable {
 	/**
 	 * 列序号
 	 */
-	private Integer ordinalPosition;
+	private Long ordinalPosition;
 
 	/**
 	 * 列默认值
@@ -124,5 +122,13 @@ public class SqlColumn implements Serializable {
 
 	public boolean isNULLAble() {
 		return "YES".equals(this.isNullable);
+	}
+
+	@Override
+	public String toString() {
+		return "SqlColumn{" +
+				"columnName='" + columnName + '\'' +
+				", columnComment='" + columnComment + '\'' +
+				'}';
 	}
 }

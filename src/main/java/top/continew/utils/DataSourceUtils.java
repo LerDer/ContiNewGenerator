@@ -47,7 +47,6 @@ public class DataSourceUtils {
 	}
 
 	public static List<SqlColumn> getSqlTablesColumns(Project project, VirtualFile vf, String tableName) {
-		DataSourceUtils.initDataSource(project, vf);
 		String sql = "SELECT * FROM information_schema.`COLUMNS` WHERE TABLE_SCHEMA = ? AND table_name = ? ORDER BY ORDINAL_POSITION";
 		ListHandler<SqlColumn> handler = new ListHandler<>(SqlColumn.class);
 		return DataSourceUtils.executeQuery(sql, handler, DataSourceUtils.getDbName(), tableName);

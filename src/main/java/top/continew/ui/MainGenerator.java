@@ -5,6 +5,8 @@ import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.List;
 import javax.swing.Action;
@@ -152,6 +154,10 @@ public class MainGenerator extends DialogWrapper {
 			instance.setUpdateDate(updateTimeTextField.getText());
 			instance.setLogicalDelete(logicDeleteTextField.getText());
 		});
+		nextButton.addActionListener(e -> {
+            TableGenerate tableGenerate = new TableGenerate(project, LocalFileSystem.getInstance().findFileByIoFile(new File(this.configFilePathTextField.getText())), this.tableNameTextField.getSelectedItem());
+            tableGenerate.show();
+        });
 	}
 
 	private void fillTableSelect(Project project, VirtualFile vf) {

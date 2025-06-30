@@ -32,6 +32,6 @@ public class SqlTable implements Serializable {
 	private String tableComment;
 
 	public String getTableNameComment() {
-		return tableName + (StringUtils.isBlank(tableComment) ? "" : "-" + tableComment);
+		return tableName + (StringUtils.isBlank(tableComment) ? "" : " - " + tableComment);
 	}
 }
