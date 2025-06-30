@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.Action;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -71,6 +72,7 @@ public class MainGenerator extends DialogWrapper {
 		String configPath = instance.getConfigPath();
 		if (StringUtils.isNotEmpty(configPath)) {
 			this.configFilePathTextField.setText(configPath);
+			fillTableSelect(project, LocalFileSystem.getInstance().findFileByIoFile(new File(configPath)));
 		}
 		String author = instance.getAuthor();
 		if (StringUtils.isNotEmpty(author)) {
@@ -118,21 +120,7 @@ public class MainGenerator extends DialogWrapper {
 				String path = vf.getPath();
 				this.configFilePathTextField.setText(path);
 				instance.setConfigPath(path);
-				DataSourceUtils.initDataSource(project, vf);
-				String sql = "SELECT TABLE_NAME,TABLE_COMMENT FROM INFORMATION_SCHEMA.`TABLES` WHERE TABLE_SCHEMA = ?";
-				ListHandler<SqlTable> handler = new ListHandler<>(SqlTable.class);
-				List<SqlTable> sqlTables = DataSourceUtils.executeQuery(sql, handler, DataSourceUtils.getDbName());
-				if (sqlTables == null) {
-					NotificationUtil.showWarningNotification("查询表失败", "查询表失败结果为空");
-					return;
-				}
-				List<String> tables = sqlTables
-						.stream()
-						.map(SqlTable::getTableName)
-						.distinct()
-						.collect(Collectors.toList());
-				tableNameTextField.getComboKeyHandler().setList(tables);
-				tableNameTextField.repaint();
+				fillTableSelect(project, vf);
 			}
 		});
 		selectPathButton.setIcon(PluginIconsUtils.projectStructure);
@@ -153,6 +141,23 @@ public class MainGenerator extends DialogWrapper {
 		cancelButton.setIcon(PluginIconsUtils.testFailed);
 		cancelButton.addActionListener(e -> dispose());
 
+	}
+
+	private void fillTableSelect(Project project, VirtualFile vf) {
+		DataSourceUtils.initDataSource(project, vf);
+		String sql = "SELECT TABLE_NAME,TABLE_COMMENT FROM INFORMATION_SCHEMA.`TABLES` WHERE TABLE_SCHEMA = ?";
+		ListHandler<SqlTable> handler = new ListHandler<>(SqlTable.class);
+		List<SqlTable> sqlTables = DataSourceUtils.executeQuery(sql, handler, DataSourceUtils.getDbName());
+		if (sqlTables == null) {
+			NotificationUtil.showWarningNotification("查询表失败", "查询表失败结果为空");
+			return;
+		}
+		List<String> tables = sqlTables
+				.stream()
+				.map(SqlTable::getTableNameComment)
+				.distinct()
+				.toList();
+		tableNameTextField.setModel(new DefaultComboBoxModel<>(tables.toArray(new String[0])));
 	}
 
 	@Override
