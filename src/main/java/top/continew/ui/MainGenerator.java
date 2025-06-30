@@ -38,7 +38,7 @@ public class MainGenerator extends DialogWrapper {
 	private JLabel updateTimeLabel;
 	private JTextField logicDeleteTextField;
 	private JLabel logicDeleteLabel;
-	private JTextField tableNameTextField;
+	private AutoCompleteComboBox tableNameTextField;
 	private JLabel tableLabel;
 	private JButton cancelButton;
 	private JButton nextButton;
@@ -92,4 +92,5 @@ public class MainGenerator extends DialogWrapper {
 	protected Action[] createActions() {
 		return new Action[0];
 	}
+
 }
