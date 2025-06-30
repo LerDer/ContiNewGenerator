@@ -10,5 +10,5 @@ import javax.swing.JTable;
 public class TableGenerate {
 
 	private JPanel rootPanel;
-	private JTable table1;
+	private JTable columnTable;
 }
