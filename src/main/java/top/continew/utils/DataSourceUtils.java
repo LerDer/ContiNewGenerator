@@ -21,6 +21,8 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.yaml.snakeyaml.Yaml;
+import top.continew.entity.SqlColumn;
+import top.continew.entity.SqlTable;
 
 /**
  * @author lww
@@ -35,6 +37,20 @@ public class DataSourceUtils {
 	private static volatile String dbName;
 
 	private DataSourceUtils() {
+	}
+
+	public static List<SqlTable> getSqlTables(Project project, VirtualFile vf) {
+		DataSourceUtils.initDataSource(project, vf);
+		String sql = "SELECT TABLE_NAME,TABLE_COMMENT FROM INFORMATION_SCHEMA.`TABLES` WHERE TABLE_SCHEMA = ?";
+		ListHandler<SqlTable> handler = new ListHandler<>(SqlTable.class);
+		return DataSourceUtils.executeQuery(sql, handler, DataSourceUtils.getDbName());
+	}
+
+	public static List<SqlColumn> getSqlTablesColumns(Project project, VirtualFile vf, String tableName) {
+		DataSourceUtils.initDataSource(project, vf);
+		String sql = "SELECT * FROM information_schema.`COLUMNS` WHERE TABLE_SCHEMA = ? AND table_name = ? ORDER BY ORDINAL_POSITION";
+		ListHandler<SqlColumn> handler = new ListHandler<>(SqlColumn.class);
+		return DataSourceUtils.executeQuery(sql, handler, DataSourceUtils.getDbName(), tableName);
 	}
 
 	public static void initDataSource(Project project, VirtualFile vf) {

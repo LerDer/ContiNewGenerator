@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.Nullable;
 import top.continew.persistent.ContiNewGeneratorPersistent;
 import top.continew.utils.DataSourceUtils;
 import top.continew.utils.DataSourceUtils.ListHandler;
@@ -154,10 +155,7 @@ public class MainGenerator extends DialogWrapper {
 	}
 
 	private void fillTableSelect(Project project, VirtualFile vf) {
-		DataSourceUtils.initDataSource(project, vf);
-		String sql = "SELECT TABLE_NAME,TABLE_COMMENT FROM INFORMATION_SCHEMA.`TABLES` WHERE TABLE_SCHEMA = ?";
-		ListHandler<SqlTable> handler = new ListHandler<>(SqlTable.class);
-		List<SqlTable> sqlTables = DataSourceUtils.executeQuery(sql, handler, DataSourceUtils.getDbName());
+		List<SqlTable> sqlTables = DataSourceUtils.getSqlTables(project, vf);
 		if (sqlTables == null) {
 			NotificationUtil.showWarningNotification("查询表失败", "查询表失败结果为空");
 			return;
@@ -169,6 +167,7 @@ public class MainGenerator extends DialogWrapper {
 				.toList();
 		tableNameTextField.setModel(new DefaultComboBoxModel<>(tables.toArray(new String[0])));
 	}
+
 
 	@Override
 	protected JComponent createCenterPanel() {
