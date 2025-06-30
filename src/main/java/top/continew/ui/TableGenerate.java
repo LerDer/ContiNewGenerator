@@ -1,6 +1,7 @@
 package top.continew.ui;
 
 import javax.swing.JPanel;
+import javax.swing.JTable;
 
 /**
  * @author lww
@@ -9,4 +10,5 @@ import javax.swing.JPanel;
 public class TableGenerate {
 
 	private JPanel rootPanel;
+	private JTable table1;
 }

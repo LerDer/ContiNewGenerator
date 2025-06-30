@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
@@ -117,27 +118,40 @@ public class CommonUtil {
 	}
 
 	public static String type2JavaType(String type) {
-		if (type.equals("int") || type.equals("integer") || type.equals("tinyint") || type.equals("smallint") || type.equals("mediumint")) {
+		if (List.of(
+				"int",
+				"tinyint",
+				"smallint",
+				"mediumint",
+				"integer"
+		).contains(type.toLowerCase())) {
 			return "Integer";
-		} else if (type.equals("bigint")) {
-			return "Long";
-		} else if (type.equals("varchar") || type.equals("char") || type.equals("text")
-				|| type.equals("longtext") || type.equals("enum") || type.equals("set")
-				|| type.equals("json") || type.equals("geometry") || type.equals("point") || type.equals("linestring")
-				|| type.equals("polygon") || type.equals("multipoint") || type.equals(
-				"multilinestring") || type.equals("multipolygon") || type.equals("geometrycollection")) {
+		} else if (List.of(
+				"varchar",
+				"char",
+				"text",
+				"mediumtext",
+				"longtext",
+				"tinytext",
+				"json"
+		).contains(type.toLowerCase())) {
 			return "String";
-		} else if (type.equals("datetime") || type.equals("timestamp") || type.equals("date") || type.equals("time") || type.equals("year")) {
-			return "Date";
-		} else if (type.equals("decimal")) {
+		} else if (List.of(
+				"datetime",
+				"timestamp"
+		).contains(type.toLowerCase())) {
+			return "LocalDateTime";
+		} else if (type.equalsIgnoreCase("date")) {
+			return "LocalDate";
+		} else if (type.equalsIgnoreCase("bigint")) {
+			return "Long";
+		} else if (type.equalsIgnoreCase("decimal")) {
 			return "BigDecimal";
-		} else if (type.equals("float")) {
+		} else if (type.equalsIgnoreCase("float")) {
 			return "Float";
-		} else if (type.equals("double")) {
+		} else if (type.equalsIgnoreCase("double")) {
 			return "Double";
-		} else if (type.equals("binary") || type.equals("blob") || type.equals("longblob") || type.equals("mediumblob") || type.equals("tinyblob") || type.equals("varbinary")) {
-			return "byte[]";
-		} else if (type.equals("bit")) {
+		} else if (type.equalsIgnoreCase("bit")) {
 			return "Boolean";
 		} else {
 			return "未知类型：" + type;
