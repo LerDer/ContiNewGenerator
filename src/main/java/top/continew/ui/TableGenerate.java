@@ -5,7 +5,9 @@ import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.vfs.VirtualFile;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JComboBox;
@@ -14,8 +16,10 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
+import org.apache.commons.collections.CollectionUtils;
 import top.continew.constant.GenerateConstant;
 import top.continew.entity.SqlColumn;
+import top.continew.entity.SysDict;
 import top.continew.enums.FormTypeEnum;
 import top.continew.enums.JavaTypeEnum;
 import top.continew.enums.QueryTypeEnum;
@@ -64,6 +68,7 @@ public class TableGenerate extends DialogWrapper {
 				tableName = selectedItem.toString();
 			}
 			List<SqlColumn> columns = DataSourceUtils.getSqlTablesColumns(project, vf, tableName);
+			List<SysDict> dictNames = DataSourceUtils.getDictNames(project, vf);
 			data = new Object[columns.size()][];
 			for (SqlColumn sqlColumn : columns) {
 				Object[] column = new Object[columnList.length];
@@ -129,41 +134,50 @@ public class TableGenerate extends DialogWrapper {
 				}
 
 				//关联字典
-				column[12] = ""; // TODO
+				column[12] = "无需设置";
 				data[columns.indexOf(sqlColumn)] = column;
 			}
-		}
-		// 创建表格模型
-		DefaultTableModel model = new DefaultTableModel(data, columnList) {
-			@Override
-			public Class<?> getColumnClass(int columnIndex) {
-				if (columnIndex == 6 || columnIndex == 7 || columnIndex == 8 || columnIndex == 9) {
-					return Boolean.class;
+
+			// 创建表格模型
+			DefaultTableModel model = new DefaultTableModel(data, columnList) {
+				@Override
+				public Class<?> getColumnClass(int columnIndex) {
+					if (columnIndex == 6 || columnIndex == 7 || columnIndex == 8 || columnIndex == 9) {
+						return Boolean.class;
+					}
+					return super.getColumnClass(columnIndex);
 				}
-				return super.getColumnClass(columnIndex);
+			};
+			MyHeaderRenderer headerRenderer = new MyHeaderRenderer();
+			columnTable.getTableHeader().setDefaultRenderer(headerRenderer);
+			MyCellRenderer renderer = new MyCellRenderer();
+			for (int n = 0; n < columnTable.getColumnCount(); n++) {
+				columnTable.getColumnModel().getColumn(n).setCellRenderer(renderer);
 			}
-		};
-		MyHeaderRenderer headerRenderer = new MyHeaderRenderer();
-		columnTable.getTableHeader().setDefaultRenderer(headerRenderer);
-		MyCellRenderer renderer = new MyCellRenderer();
-		for (int n = 0; n < columnTable.getColumnCount(); n++) {
-			columnTable.getColumnModel().getColumn(n).setCellRenderer(renderer);
+			columnTable.getTableHeader().repaint();
+			columnTable.setModel(model);
+			columnTable.repaint();
+			// 设置表单类型为下拉框
+			TableColumn javaTypeColumn = columnTable.getColumnModel().getColumn(4);
+			JComboBox<String> javaTypeComboBox = new ComboBox<>(JAVA_TYPE_OPTIONS);
+			javaTypeColumn.setCellEditor(new DefaultCellEditor(javaTypeComboBox));
+
+			TableColumn formTypeColumn = columnTable.getColumnModel().getColumn(10);
+			JComboBox<String> formTypeComboBox = new ComboBox<>(FORM_TYPE_OPTIONS);
+			formTypeColumn.setCellEditor(new DefaultCellEditor(formTypeComboBox));
+
+			TableColumn queryTypeColumn = columnTable.getColumnModel().getColumn(11);
+			JComboBox<String> queryTypeComboBox = new ComboBox<>(QUERY_TYPE_OPTIONS);
+			queryTypeColumn.setCellEditor(new DefaultCellEditor(queryTypeComboBox));
+
+			List<String> collect = dictNames.stream().map(SysDict::getName).collect(Collectors.toList());
+			collect.add("无需设置");
+			Collections.reverse(collect);
+			TableColumn dictColumn = columnTable.getColumnModel().getColumn(12);
+			JComboBox<String> dictComboBox = new ComboBox<>(collect.toArray(new String[0]));
+			dictColumn.setCellEditor(new DefaultCellEditor(dictComboBox));
 		}
-		columnTable.getTableHeader().repaint();
-		columnTable.setModel(model);
-		columnTable.repaint();
-		// 设置表单类型为下拉框
-		TableColumn javaTypeColumn = columnTable.getColumnModel().getColumn(4);
-		JComboBox<String> javaTypeComboBox = new ComboBox<>(JAVA_TYPE_OPTIONS);
-		javaTypeColumn.setCellEditor(new DefaultCellEditor(javaTypeComboBox));
 
-		TableColumn formTypeColumn = columnTable.getColumnModel().getColumn(10);
-		JComboBox<String> formTypeComboBox = new ComboBox<>(FORM_TYPE_OPTIONS);
-		formTypeColumn.setCellEditor(new DefaultCellEditor(formTypeComboBox));
-
-		TableColumn queryTypeColumn = columnTable.getColumnModel().getColumn(11);
-		JComboBox<String> queryTypeComboBox = new ComboBox<>(QUERY_TYPE_OPTIONS);
-		queryTypeColumn.setCellEditor(new DefaultCellEditor(queryTypeComboBox));
 	}
 
 	@Override

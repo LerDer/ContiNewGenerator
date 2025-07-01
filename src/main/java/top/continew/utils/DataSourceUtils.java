@@ -24,6 +24,7 @@ import org.yaml.snakeyaml.Yaml;
 import top.continew.constant.GenerateConstant;
 import top.continew.entity.SqlColumn;
 import top.continew.entity.SqlTable;
+import top.continew.entity.SysDict;
 
 /**
  * @author lww
@@ -48,9 +49,17 @@ public class DataSourceUtils {
 	}
 
 	public static List<SqlColumn> getSqlTablesColumns(Project project, VirtualFile vf, String tableName) {
+		DataSourceUtils.initDataSource(project, vf);
 		String sql = "SELECT * FROM information_schema.`COLUMNS` WHERE TABLE_SCHEMA = ? AND table_name = ? ORDER BY ORDINAL_POSITION";
 		ListHandler<SqlColumn> handler = new ListHandler<>(SqlColumn.class);
 		return DataSourceUtils.executeQuery(sql, handler, DataSourceUtils.getDbName(), tableName);
+	}
+
+	public static List<SysDict> getDictNames(Project project, VirtualFile vf) {
+		DataSourceUtils.initDataSource(project, vf);
+		String sql = "select `name` from sys_dict";
+		ListHandler<SysDict> handler = new ListHandler<>(SysDict.class);
+		return DataSourceUtils.executeQuery(sql, handler);
 	}
 
 	public static void initDataSource(Project project, VirtualFile vf) {
