@@ -34,7 +34,9 @@ public class ${className} extends BaseDO {
     private static final long serialVersionUID = 1L;
 <#if fieldConfigs??>
   <#list fieldConfigs as fieldConfig>
-
+        <#if doExcludeFields?seq_contains(fieldConfig.fieldName)>
+            <#continue>
+        </#if>
     /**
      * ${fieldConfig.comment!""}
      */

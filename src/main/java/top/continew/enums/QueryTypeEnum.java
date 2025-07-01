@@ -103,4 +103,13 @@ public enum QueryTypeEnum implements BaseEnum<Integer> {
 
 	private final Integer value;
 	private final String description;
+
+	public static QueryTypeEnum getByDes(String description) {
+		for (QueryTypeEnum type : QueryTypeEnum.values()) {
+			if (type.getDescription().equals(description)) {
+				return type;
+			}
+		}
+		return null;
+	}
 }

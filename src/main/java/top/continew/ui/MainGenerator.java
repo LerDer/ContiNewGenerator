@@ -39,14 +39,6 @@ public class MainGenerator extends DialogWrapper {
 	private JTextField packageNameTextField;
 	private JLabel tablePrefixLabel;
 	private JTextField tablePrefixTextField;
-	private JTextField versionTextField;
-	private JLabel versionLabel;
-	private JTextField createTimeTextField;
-	private JTextField updateTimeTextField;
-	private JLabel createTimeLabel;
-	private JLabel updateTimeLabel;
-	private JTextField logicDeleteTextField;
-	private JLabel logicDeleteLabel;
 	private AutoCompleteComboBox tableNameTextField;
 	private JLabel tableLabel;
 	private JButton cancelButton;
@@ -101,22 +93,6 @@ public class MainGenerator extends DialogWrapper {
 		if (StringUtils.isNotEmpty(tablePrefix)) {
 			this.tablePrefixTextField.setText(tablePrefix);
 		}
-		String version = instance.getVersion();
-		if (StringUtils.isNotEmpty(version)) {
-			this.versionTextField.setText(version);
-		}
-		String createDate = instance.getCreateDate();
-		if (StringUtils.isNotEmpty(createDate)) {
-			this.createTimeTextField.setText(createDate);
-		}
-		String updateDate = instance.getUpdateDate();
-		if (StringUtils.isNotEmpty(updateDate)) {
-			this.updateTimeTextField.setText(updateDate);
-		}
-		String logicalDelete = instance.getLogicalDelete();
-		if (StringUtils.isNotEmpty(logicalDelete)) {
-			this.logicDeleteTextField.setText(logicalDelete);
-		}
 		String businessName = instance.getBusinessName();
 		if (StringUtils.isNotEmpty(businessName)) {
 			this.businessNameTextField.setText(businessName);
@@ -143,10 +119,6 @@ public class MainGenerator extends DialogWrapper {
 		instance.setMysql(mysqlCheckBox.isSelected());
 		instance.setPg(postgresCheckBox.isSelected());
 		instance.setTablePrefix(tablePrefixTextField.getText());
-		instance.setVersion(versionTextField.getText());
-		instance.setCreateDate(createTimeTextField.getText());
-		instance.setUpdateDate(updateTimeTextField.getText());
-		instance.setLogicalDelete(logicDeleteTextField.getText());
 		TableGenerate tableGenerate = new TableGenerate(project, LocalFileSystem.getInstance().findFileByIoFile(new File(this.configFilePathTextField.getText())),
 				this.tableNameTextField.getSelectedItem());
 		tableGenerate.show();

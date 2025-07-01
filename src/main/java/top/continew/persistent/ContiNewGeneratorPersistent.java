@@ -29,10 +29,6 @@ public class ContiNewGeneratorPersistent implements PersistentStateComponent<Con
 	private boolean pg;
 
 	private String tablePrefix;
-	private String version;
-	private String createDate;
-	private String updateDate;
-	private String logicalDelete;
 
 	public static ContiNewGeneratorPersistent getInstance(Project project) {
 		ContiNewGeneratorPersistent config = project.getService(ContiNewGeneratorPersistent.class);

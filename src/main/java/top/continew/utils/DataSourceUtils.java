@@ -57,7 +57,7 @@ public class DataSourceUtils {
 
 	public static List<SysDict> getDictNames(Project project, VirtualFile vf) {
 		DataSourceUtils.initDataSource(project, vf);
-		String sql = "select `name` from sys_dict";
+		String sql = "select `name`,`code` from sys_dict";
 		ListHandler<SysDict> handler = new ListHandler<>(SysDict.class);
 		return DataSourceUtils.executeQuery(sql, handler);
 	}

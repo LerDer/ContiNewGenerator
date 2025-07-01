@@ -1,5 +1,6 @@
 package top.continew.ui;
 
+import com.alibaba.fastjson.JSONObject;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.DialogWrapper;
@@ -63,6 +64,8 @@ public class TableGenerate extends DialogWrapper {
 	// {"等于", "不等于", "大于", "大于等于", "小于", "小于等于", "模糊查询", "范围查询", "包含", "开始于", "结束于"};
 	private static final String[] QUERY_TYPE_OPTIONS = Arrays.stream(QueryTypeEnum.values()).map(QueryTypeEnum::getDescription).toArray(String[]::new);
 
+	private Map<String, Object> dictMap = new HashMap<>();
+
 	static {
 		columnList = new String[]{
 				"序号", "列名称", "字段名称", "列类型", "Java类型", "描述", "列表", "表单", "必填", "查询", "表单类型", "查询方式", "关联字典"
@@ -94,10 +97,6 @@ public class TableGenerate extends DialogWrapper {
 		boolean isMysql = instance.isMysql();
 		boolean isPg = instance.isPg();
 		String tablePrefix = instance.getTablePrefix();
-		String version = instance.getVersion();
-		String createDate = instance.getCreateDate();
-		String updateDate = instance.getUpdateDate();
-		String logicalDelete = instance.getLogicalDelete();
 
 		String tableName;
 		String tableComment = "";
@@ -114,6 +113,9 @@ public class TableGenerate extends DialogWrapper {
 		}
 
 		Map<String, Object> dataModel = new HashMap<>();
+
+		List<Object> dictCodes = new ArrayList<>();
+		dataModel.put("dictCodes", dictCodes);
 		//表名称
 		dataModel.put("tableName", tableName);
 		//表注释
@@ -144,7 +146,7 @@ public class TableGenerate extends DialogWrapper {
 		//类名
 		dataModel.put("className", CommonUtil.underlineToHump1(className));
 		//类名前缀
-		dataModel.put("classNamePrefix", tablePrefix);
+		dataModel.put("classNamePrefix", CommonUtil.underlineToHump1(className));
 		//子包名称
 		dataModel.put("subPackageName", GenerateConstant.doPackageName);
 
@@ -152,6 +154,10 @@ public class TableGenerate extends DialogWrapper {
 		dataModel.put("hasTimeField", false);
 		dataModel.put("hasDictField", false);
 		dataModel.put("hasRequiredField", false);
+
+		dataModel.put("doExcludeFields", GenerateConstant.doExcludeFields.split(","));
+		dataModel.put("respExcludeFields", GenerateConstant.respExcludeFields.split(","));
+		dataModel.put("detailRespExcludeFields", GenerateConstant.detailRespExcludeFields.split(","));
 
 		List<Map<String, Object>> fieldConfigs = new ArrayList<>();
 		dataModel.put("fieldConfigs", fieldConfigs);
@@ -201,7 +207,7 @@ public class TableGenerate extends DialogWrapper {
 				if (columnName.equals("必填")) {
 					fieldConfig.put("isRequired", columnTable.getValueAt(i, j));
 					if (columnTable.getValueAt(i, j).equals(Boolean.TRUE)) {
-						dataModel.put("hasRequiredField", false);
+						dataModel.put("hasRequiredField", true);
 					}
 				}
 				// 列表
@@ -218,17 +224,46 @@ public class TableGenerate extends DialogWrapper {
 				}
 				// 表单类型
 				if (columnName.equals("表单类型")) {
-					fieldConfig.put("formType", columnTable.getValueAt(i, j).toString());
+					String formType = columnTable.getValueAt(i, j).toString();
+					if (StringUtils.isNotBlank(formType)) {
+						FormTypeEnum typeEnum = FormTypeEnum.getByDes(formType);
+						if (typeEnum != null) {
+							fieldConfig.put("formType", typeEnum.name());
+						} else {
+							fieldConfig.put("formType", "");
+						}
+					} else {
+						fieldConfig.put("formType", "");
+					}
 				}
 				// 查询方式
 				if (columnName.equals("查询方式")) {
-					fieldConfig.put("queryType", columnTable.getValueAt(i, j).toString());
+					String queryType = columnTable.getValueAt(i, j).toString();
+					if (StringUtils.isNotBlank(queryType)) {
+						QueryTypeEnum typeEnum = QueryTypeEnum.getByDes(queryType);
+						if (typeEnum != null) {
+							fieldConfig.put("queryType", typeEnum.name());
+						} else {
+							fieldConfig.put("queryType", "");
+						}
+					} else {
+						fieldConfig.put("queryType", "");
+					}
 				}
 				// 关联字典
 				if (columnName.equals("关联字典")) {
-					fieldConfig.put("dictCode", columnTable.getValueAt(i, j).toString());
-					if (StringUtils.isNotBlank(columnTable.getValueAt(i, j).toString())) {
-						dataModel.put("hasDictField", false);
+					String dictName = columnTable.getValueAt(i, j).toString();
+					if (StringUtils.isNotBlank(dictName)) {
+						Object o = dictMap.get(dictName);
+						if (o != null) {
+							dataModel.put("hasDictField", true);
+							fieldConfig.put("dictCode", o);
+							dictCodes.add(o);
+						} else {
+							fieldConfig.put("dictCode", "");
+						}
+					} else {
+						fieldConfig.put("dictCode", "");
 					}
 				}
 			}
@@ -241,6 +276,8 @@ public class TableGenerate extends DialogWrapper {
 		String javaPath = projectPath + File.separator + "src" + File.separator + "main" + File.separator + "java";
 		String resourcesPath = projectPath + File.separator + "src" + File.separator + "main" + File.separator + "resources";
 
+		String jsonString = JSONObject.toJSONString(dataModel);
+		System.out.println("jsonString = " + jsonString);
 		generateFile(cfg, GenerateConstant.doTemplatePath,
 				dataModel,
 				javaPath,
@@ -279,6 +316,7 @@ public class TableGenerate extends DialogWrapper {
 			}
 			List<SqlColumn> columns = DataSourceUtils.getSqlTablesColumns(project, vf, tableName);
 			List<SysDict> dictNames = DataSourceUtils.getDictNames(project, vf);
+			dictMap = dictNames.stream().collect(Collectors.toMap(SysDict::getName, SysDict::getCode));
 			data = new Object[columns.size()][];
 			for (SqlColumn sqlColumn : columns) {
 				Object[] column = new Object[columnList.length];

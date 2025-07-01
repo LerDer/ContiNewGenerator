@@ -93,4 +93,13 @@ public enum FormTypeEnum implements BaseEnum<Integer> {
 
 	private final Integer value;
 	private final String description;
+
+	public static FormTypeEnum getByDes(String description) {
+		for (FormTypeEnum formType : FormTypeEnum.values()) {
+			if (formType.getDescription().equals(description)) {
+				return formType;
+			}
+		}
+		return null;
+	}
 }

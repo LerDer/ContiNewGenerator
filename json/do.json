@@ -6,9 +6,10 @@
   "className": "InfoDO",
   "classNamePrefix": "Info",
   "createTime": "2025-07-01T13:30:29",
-  "datetime": "2025/07/01 13:53",
+  "datetime": "2025/07/01 16:07",
   "dictCodes": [
     "plate_type",
+    "transmission_type",
     "car_type"
   ],
   "fieldConfigs": [
@@ -246,6 +247,7 @@
       "columnType": "varchar",
       "comment": "变速箱类型(手动、自动)",
       "createTime": "2025-07-01T13:30:28",
+      "dictCode": "transmission_type",
       "fieldName": "transmission",
       "fieldSort": 16,
       "fieldType": "String",
@@ -396,5 +398,5 @@
   "subPackageName": "model.entity",
   "tableName": "vehicle_info",
   "tablePrefix": "vehicle_",
-  "updateTime": "2025-07-01T13:53:50"
+  "updateTime": "2025-07-01T16:07:45"
 }
