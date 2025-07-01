@@ -6,6 +6,8 @@ import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
@@ -55,6 +57,9 @@ public class MainGenerator extends DialogWrapper {
 	private JTextField businessNameTextField;
 	private JLabel businessNameLabel;
 	private JComboBox<String> moduleComboBox;
+	private JTextField vuePathTextField;
+	private JButton vueSelectPathButton;
+	private JLabel vuePathLabel;
 
 	public MainGenerator(Project project) {
 		super(project);
@@ -65,25 +70,30 @@ public class MainGenerator extends DialogWrapper {
 		reShow(project);
 		configFilePathButton.setIcon(PluginIconsUtils.yaml);
 		configFilePathButton.addActionListener(e -> chooseConfigPath(project));
-		selectPathButton.setIcon(PluginIconsUtils.projectDirectory);
+		selectPathButton.setIcon(PluginIconsUtils.springBoot);
 		selectPathButton.addActionListener(e -> chooseProjectPath(project));
 		nextButton.setIcon(PluginIconsUtils.sendToTheRight);
 		cancelButton.setIcon(PluginIconsUtils.testFailed);
 		cancelButton.addActionListener(e -> dispose());
 		nextButton.addActionListener(e -> nextStep(project));
+		
+		vueSelectPathButton.setIcon(PluginIconsUtils.vue);
 		//获取当前项目的所有模块信息
 		Module[] modules = ProjectUtil.getModules(project);
 		String[] moduleNames = Arrays.stream(modules).map(Module::getName).toArray(String[]::new);
 		moduleComboBox.setModel(new DefaultComboBoxModel<>(moduleNames));
-		tableNameTextField.addActionListener(e -> {
-			if (tableNameTextField.getSelectedItem() != null) {
-				String tableNameSelect = tableNameTextField.getSelectedItem().toString();
-				if (tableNameSelect.indexOf(" - ") > 0) {
-					String tableComment = tableNameSelect.split(" - ")[1];
-					businessNameTextField.setText(tableComment);
-				}
+		tableNameTextField.addActionListener(e -> seetBusinessName());
+		vueSelectPathButton.addActionListener(e -> chooseVuePath(project));
+	}
+
+	private void seetBusinessName() {
+		if (tableNameTextField.getSelectedItem() != null) {
+			String tableNameSelect = tableNameTextField.getSelectedItem().toString();
+			if (tableNameSelect.indexOf(" - ") > 0) {
+				String tableComment = tableNameSelect.split(" - ")[1];
+				businessNameTextField.setText(tableComment);
 			}
-		});
+		}
 	}
 
 	private void reShow(Project project) {
@@ -92,6 +102,10 @@ public class MainGenerator extends DialogWrapper {
 		String projectPath = instance.getProjectPath();
 		if (StringUtils.isNotEmpty(projectPath)) {
 			this.projectPathTextField.setText(projectPath);
+		}
+		String vuePath = instance.getVuePath();
+		if (StringUtils.isNotBlank(vuePath)) {
+			vuePathTextField.setText(vuePath);
 		}
 		String configPath = instance.getConfigPath();
 		if (StringUtils.isNotEmpty(configPath)) {
@@ -128,6 +142,7 @@ public class MainGenerator extends DialogWrapper {
 	private void nextStep(Project project) {
 		ContiNewGeneratorPersistent instance = ContiNewGeneratorPersistent.getInstance(project);
 		instance.setProjectPath(projectPathTextField.getText());
+		instance.setVuePath(vuePathTextField.getText());
 		instance.setConfigPath(configFilePathTextField.getText());
 		instance.setAuthor(authorTextField.getText());
 		instance.setPackageName(packageNameTextField.getText());
@@ -156,8 +171,7 @@ public class MainGenerator extends DialogWrapper {
 		DataSourceUtils.resetDataSources();
 		ContiNewGeneratorPersistent instance = ContiNewGeneratorPersistent.getInstance(project);
 		FileChooseUtils uiComponentFacade = FileChooseUtils.getInstance(project);
-		VirtualFile baseDir = null;
-		baseDir = ProjectUtil.guessProjectDir(project);
+		VirtualFile baseDir = ProjectUtil.guessProjectDir(project);
 		String text = configFilePathTextField.getText();
 		if (StringUtils.isNotEmpty(text)) {
 			File file = new File(text);
@@ -172,6 +186,26 @@ public class MainGenerator extends DialogWrapper {
 			this.configFilePathTextField.setText(path);
 			instance.setConfigPath(path);
 			fillTableSelect(project, vf);
+		}
+	}
+
+	private void chooseVuePath(Project project) {
+		ContiNewGeneratorPersistent instance = ContiNewGeneratorPersistent.getInstance(project);
+		FileChooseUtils uiComponentFacade = FileChooseUtils.getInstance(project);
+		VirtualFile baseDir = ProjectUtil.guessProjectDir(project);
+		String text = vuePathTextField.getText();
+		if (StringUtils.isNotEmpty(text)) {
+			File file = new File(text);
+			File parentFile = file.getParentFile();
+			if (parentFile != null && parentFile.exists()) {
+				baseDir = LocalFileSystem.getInstance().findFileByIoFile(parentFile);
+			}
+		}
+		final VirtualFile vf = uiComponentFacade.showSingleFolderSelectionDialog("选择前端项目路径", baseDir, baseDir);
+		if (null != vf) {
+			String path = vf.getPath();
+			this.vuePathTextField.setText(path);
+			instance.setVuePath(path);  
 		}
 	}
 

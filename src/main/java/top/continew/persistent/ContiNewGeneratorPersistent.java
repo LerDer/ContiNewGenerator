@@ -19,6 +19,7 @@ import org.jetbrains.annotations.NotNull;
 public class ContiNewGeneratorPersistent implements PersistentStateComponent<ContiNewGeneratorPersistent> {
 
 	private String projectPath;
+	private String vuePath;
 	private String configPath;
 	private String author;
 	private String packageName;

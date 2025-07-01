@@ -24,6 +24,12 @@ public class PluginIconsUtils {
 
 	public static final Icon projectDirectory = load("/icons/projectDirectory.svg");
 	public static final Icon projectDirectory_dark = load("/icons/projectDirectory_dark.svg");
+	
+	public static final Icon springBoot = load("/icons/springBoot.svg");
+	public static final Icon springBoot_dark = load("/icons/springBoot_dark.svg");
+	
+	public static final Icon vue = load("/icons/vue.svg");
+	public static final Icon vue_dark = load("/icons/vue_dark.svg");
 
 	public static Icon load(String iconPath) {
 		return IconLoader.getIcon(iconPath, PluginIconsUtils.class);

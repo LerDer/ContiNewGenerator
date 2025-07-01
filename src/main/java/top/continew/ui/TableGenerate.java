@@ -94,6 +94,7 @@ public class TableGenerate extends DialogWrapper {
 	private void generateCode(Project project, Object selectedItem, Object moduleSelectItem) {
 		ContiNewGeneratorPersistent instance = ContiNewGeneratorPersistent.getInstance(project);
 		String projectPath = instance.getProjectPath();
+		String vuePath = instance.getVuePath();
 		String configPath = instance.getConfigPath();
 		String author = instance.getAuthor();
 		String packageName = instance.getPackageName();
@@ -362,25 +363,25 @@ public class TableGenerate extends DialogWrapper {
 		//生成Api
 		generateFile(cfg, GenerateConstant.apiTemplatePath,
 				dataModel,
-				resourcesPath,
+				vuePath,
 				GenerateConstant.apiPackageName + (moduleSelectItem == null ? "" : File.separator + moduleSelectItem),
 				firstSmallClassName + GenerateConstant.apiExtenstion);
 		//生成Index
 		generateFile(cfg, GenerateConstant.indexTemplatePath,
 				dataModel,
-				resourcesPath,
+				vuePath,
 				GenerateConstant.indexPackageName + (moduleSelectItem == null ? "" : File.separator + moduleSelectItem),
 				firstSmallClassName + File.separator + "index" + GenerateConstant.indexExtenstion);
 		//生成Modal
 		generateFile(cfg, GenerateConstant.addModelTemplatePath,
 				dataModel,
-				resourcesPath,
+				vuePath,
 				GenerateConstant.addModelPackageName + (moduleSelectItem == null ? "" : File.separator + moduleSelectItem),
 				firstSmallClassName + File.separator + className + "AddModal" + GenerateConstant.addModelExtenstion);
 		//生成DetailDrawer
 		generateFile(cfg, GenerateConstant.detailDrawerTemplatePath,
 				dataModel,
-				resourcesPath,
+				vuePath,
 				GenerateConstant.detailDrawerPackageName + (moduleSelectItem == null ? "" : File.separator + moduleSelectItem),
 				firstSmallClassName + File.separator + className + "DetailDrawer" + GenerateConstant.detailDrawerExtenstion);
 		//生成Menu
