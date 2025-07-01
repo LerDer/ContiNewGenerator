@@ -153,6 +153,7 @@ public class MainGenerator extends DialogWrapper {
 	}
 
 	private void chooseConfigPath(Project project) {
+		DataSourceUtils.resetDataSources();
 		ContiNewGeneratorPersistent instance = ContiNewGeneratorPersistent.getInstance(project);
 		FileChooseUtils uiComponentFacade = FileChooseUtils.getInstance(project);
 		VirtualFile baseDir = null;

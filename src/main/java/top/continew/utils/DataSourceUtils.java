@@ -228,6 +228,13 @@ public class DataSourceUtils {
 		}
 	}
 
+	public static void resetDataSources() {
+		if (dataSource != null && dataSource instanceof HikariDataSource) {
+			((HikariDataSource) dataSource).close();
+            dataSource = null;
+		}
+	}
+
 	/**
 	 * 结果集处理器接口
 	 */
