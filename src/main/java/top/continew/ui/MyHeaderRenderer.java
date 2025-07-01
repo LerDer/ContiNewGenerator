@@ -48,7 +48,7 @@ public class MyHeaderRenderer extends DefaultTableCellRenderer {
 		// 设置图标
 		Icon icon = icons.get(column);
 		if (icon == null) {
-			icon = PluginIconsUtils.propertiesFile;
+			icon = PluginIconsUtils.logo;
 		}
 		//label.setIcon(icon);
 

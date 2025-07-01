@@ -7,20 +7,23 @@ public class PluginIconsUtils {
 
 	public static final Icon logo = load("/icons/logo.svg");
 
-	public static final Icon projectStructure = load("/icons/projectStructure.svg");
-	public static final Icon projectStructure_dark = load("/icons/projectStructure_dark.svg");
-
 	public static final Icon success = load("/icons/success.svg");
 	public static final Icon success_dark = load("/icons/success_dark.svg");
 
 	public static final Icon testFailed = load("/icons/testFailed.svg");
 	public static final Icon testFailed_dark = load("/icons/testFailed_dark.svg");
 
-	public static final Icon promptInput = load("/icons/promptInput.svg");
-	public static final Icon promptInput_dark = load("/icons/promptInput_dark.svg");
+	public static final Icon sendToTheRight = load("/icons/sendToTheRight.svg");
+	public static final Icon sendToTheRight_dark = load("/icons/sendToTheRight_dark.svg");
 
-	public static final Icon propertiesFile = load("/icons/propertiesFile.svg");
-	public static final Icon propertiesFile_dark = load("/icons/propertiesFile_dark.svg");
+	public static final Icon sendToTheLeft = load("/icons/sendToTheLeft.svg");
+	public static final Icon sendToTheLeft_dark = load("/icons/sendToTheLeft_dark.svg");
+
+	public static final Icon yaml = load("/icons/yaml.svg");
+	public static final Icon yaml_dark = load("/icons/yaml_dark.svg");
+
+	public static final Icon projectDirectory = load("/icons/projectDirectory.svg");
+	public static final Icon projectDirectory_dark = load("/icons/projectDirectory_dark.svg");
 
 	public static Icon load(String iconPath) {
 		return IconLoader.getIcon(iconPath, PluginIconsUtils.class);

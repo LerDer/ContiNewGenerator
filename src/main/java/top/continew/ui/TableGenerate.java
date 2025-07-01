@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
-import org.apache.commons.collections.CollectionUtils;
 import top.continew.constant.GenerateConstant;
 import top.continew.entity.SqlColumn;
 import top.continew.entity.SysDict;
@@ -24,6 +24,7 @@ import top.continew.enums.FormTypeEnum;
 import top.continew.enums.JavaTypeEnum;
 import top.continew.enums.QueryTypeEnum;
 import top.continew.utils.DataSourceUtils;
+import top.continew.utils.PluginIconsUtils;
 
 /**
  * @author lww
@@ -33,6 +34,8 @@ public class TableGenerate extends DialogWrapper {
 
 	private JPanel rootPanel;
 	private JTable columnTable;
+	private JButton returnButton;
+	private JButton generateButton;
 	private static final String[] columnList;
 	//{"输入框", "数字输入框", "密码输入框", "文本域", "下拉框","单选框","开关","复选框","树选择","时间框","日期框","日期时间框","图片上传","文件上传","富文本框","地图选择"};
 	private static final String[] FORM_TYPE_OPTIONS = Arrays.stream(FormTypeEnum.values()).map(FormTypeEnum::getDescription).toArray(String[]::new);
@@ -55,6 +58,14 @@ public class TableGenerate extends DialogWrapper {
 		this.setSize(1080, 720);
 		this.init();
 		showTable(project, vf, selectedItem);
+		generateButton.setIcon(PluginIconsUtils.success);
+		returnButton.setIcon(PluginIconsUtils.sendToTheLeft);
+		returnButton.addActionListener(e -> dispose());
+		generateButton.addActionListener(e -> generateCode());
+	}
+
+	private void generateCode() {
+		// TODO 生成代码
 	}
 
 	private void showTable(Project project, VirtualFile vf, Object selectedItem) {

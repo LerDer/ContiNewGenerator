@@ -67,11 +67,11 @@ public class MainGenerator extends DialogWrapper {
 		setResizable(false);
 		this.init();
 		reShow(project);
-		configFilePathButton.setIcon(PluginIconsUtils.propertiesFile);
+		configFilePathButton.setIcon(PluginIconsUtils.yaml);
 		configFilePathButton.addActionListener(e -> chooseConfigPath(project));
-		selectPathButton.setIcon(PluginIconsUtils.projectStructure);
+		selectPathButton.setIcon(PluginIconsUtils.projectDirectory);
 		selectPathButton.addActionListener(e -> chooseProjectPath(project));
-		nextButton.setIcon(PluginIconsUtils.promptInput);
+		nextButton.setIcon(PluginIconsUtils.sendToTheRight);
 		cancelButton.setIcon(PluginIconsUtils.testFailed);
 		cancelButton.addActionListener(e -> dispose());
 		nextButton.addActionListener(e -> nextStep(project));
