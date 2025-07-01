@@ -68,9 +68,12 @@ public class TableGenerate extends DialogWrapper {
 
 	private Map<String, Object> dictMap = new HashMap<>();
 
+	private static final String defaultText = "请选择";
+
+
 	static {
 		columnList = new String[]{
-				"序号", "列名称", "字段名称", "列类型", "Java类型", "描述", "列表", "表单", "必填", "查询", "表单类型", "查询方式", "关联字典", "长度"
+				"序号", "列名称", "字段名称", "列类型", "Java类型", "描述", "列表", "表单", "必填", "表单类型", "查询", "查询方式", "关联字典", "长度"
 		};
 	}
 
@@ -444,22 +447,8 @@ public class TableGenerate extends DialogWrapper {
 				//表单
 				if (Arrays.asList(GenerateConstant.formExcludeFields.split(",")).contains(sqlColumn.getJavaField())) {
 					column[7] = Boolean.FALSE;
-					column[10] = "无需设置";
 				} else {
 					column[7] = Boolean.TRUE;
-					if (sqlColumn.isNumber()) {
-						column[10] = "数字输入框";
-					} else if (sqlColumn.isDate()) {
-						column[10] = "日期框";
-					} else if (sqlColumn.isDatetime()) {
-						column[10] = "日期时间框";
-					} else if (sqlColumn.isBool()) {
-						column[10] = "开关";
-					} else if (sqlColumn.isString()) {
-						column[10] = "输入框";
-					} else {
-						column[10] = "无需设置";
-					}
 				}
 				//必填
 				if (Arrays.asList(GenerateConstant.requiredExcludeFields.split(",")).contains(sqlColumn.getJavaField())) {
@@ -468,28 +457,54 @@ public class TableGenerate extends DialogWrapper {
 					column[8] = Boolean.TRUE;
 				}
 				//表单类型
-				if (Arrays.asList(GenerateConstant.queryExcludeFields.split(",")).contains(sqlColumn.getJavaField())) {
-					column[9] = Boolean.FALSE;
-					column[11] = "无需设置";
+				if (Arrays.asList(GenerateConstant.formExcludeFields.split(",")).contains(sqlColumn.getJavaField())) {
+					column[9] = defaultText;
 				} else {
-					column[9] = Boolean.TRUE;
-					if (sqlColumn.isNumber()) {
-						column[11] = "=";
-					} else if (sqlColumn.isDate()) {
-						column[11] = "BETWEEN";
-					} else if (sqlColumn.isDatetime()) {
-						column[11] = "BETWEEN";
-					} else if (sqlColumn.isBool()) {
-						column[11] = "=";
-					} else if (sqlColumn.isString()) {
-						column[11] = "LIKE '%s%'";
+					if (sqlColumn.isString()) {
+						column[9] = "输入框";
+						} else if (sqlColumn.isDate()) {
+							column[9] = "日期框";
+						} else if (sqlColumn.isDatetime()) {
+							column[9] = "日期时间框";
+						} else if (sqlColumn.isBool()) {
+							column[9] = "开关";
+						} else if (sqlColumn.isNumber()) {
+							column[9] = "数字输入框";
 					} else {
-						column[11] = "无需设置";
+						column[9] = defaultText;
 					}
 				}
-
+				//查询
+				if (Arrays.asList(GenerateConstant.queryExcludeFields.split(",")).contains(sqlColumn.getJavaField())) {
+					column[10] = Boolean.FALSE;
+				} else {
+					// 数字类型默认支持查询 减少选择项
+					if (sqlColumn.isNumber()) {
+						column[10] = Boolean.TRUE;
+					} else {
+						column[10] = Boolean.FALSE;
+					}
+				}
+				//查询方式
+				if (Arrays.asList(GenerateConstant.queryExcludeFields.split(",")).contains(sqlColumn.getJavaField())) {
+					column[11] = defaultText;
+				} else {
+					if (sqlColumn.isNumber()) {
+						column[11] = "=";
+					//} else if (sqlColumn.isDate()) {
+					//	column[11] = "BETWEEN";
+					//} else if (sqlColumn.isDatetime()) {
+					//	column[11] = "BETWEEN";
+					//} else if (sqlColumn.isBool()) {
+					//	column[11] = "=";
+					//} else if (sqlColumn.isString()) {
+					//	column[11] = "LIKE '%s%'";
+					} else {
+						column[11] = defaultText;
+					}
+				}
 				//关联字典
-				column[12] = "无需设置";
+				column[12] = defaultText;
 				data[columns.indexOf(sqlColumn)] = column;
 				column[13] = sqlColumn.getCharacterMaximumLength();
 			}
@@ -498,7 +513,7 @@ public class TableGenerate extends DialogWrapper {
 			DefaultTableModel model = new DefaultTableModel(data, columnList) {
 				@Override
 				public Class<?> getColumnClass(int columnIndex) {
-					if (columnIndex == 6 || columnIndex == 7 || columnIndex == 8 || columnIndex == 9) {
+					if (columnIndex == 6 || columnIndex == 7 || columnIndex == 8 || columnIndex == 10) {
 						return Boolean.class;
 					}
 					return super.getColumnClass(columnIndex);
@@ -518,13 +533,13 @@ public class TableGenerate extends DialogWrapper {
 			columnTable.getColumnModel().getColumn(6).setPreferredWidth(12);
 			columnTable.getColumnModel().getColumn(7).setPreferredWidth(12);
 			columnTable.getColumnModel().getColumn(8).setPreferredWidth(12);
-			columnTable.getColumnModel().getColumn(9).setPreferredWidth(12);
+			columnTable.getColumnModel().getColumn(10).setPreferredWidth(12);
 			// 设置表单类型为下拉框
 			TableColumn javaTypeColumn = columnTable.getColumnModel().getColumn(4);
 			JComboBox<String> javaTypeComboBox = new ComboBox<>(JAVA_TYPE_OPTIONS);
 			javaTypeColumn.setCellEditor(new DefaultCellEditor(javaTypeComboBox));
 
-			TableColumn formTypeColumn = columnTable.getColumnModel().getColumn(10);
+			TableColumn formTypeColumn = columnTable.getColumnModel().getColumn(9);
 			JComboBox<String> formTypeComboBox = new ComboBox<>(FORM_TYPE_OPTIONS);
 			formTypeColumn.setCellEditor(new DefaultCellEditor(formTypeComboBox));
 
@@ -533,7 +548,7 @@ public class TableGenerate extends DialogWrapper {
 			queryTypeColumn.setCellEditor(new DefaultCellEditor(queryTypeComboBox));
 
 			List<String> collect = dictNames.stream().map(SysDict::getName).collect(Collectors.toList());
-			collect.add("无需设置");
+			collect.add(defaultText);
 			Collections.reverse(collect);
 			TableColumn dictColumn = columnTable.getColumnModel().getColumn(12);
 			JComboBox<String> dictComboBox = new ComboBox<>(collect.toArray(new String[0]));

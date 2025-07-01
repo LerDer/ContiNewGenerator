@@ -29,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum QueryTypeEnum implements BaseEnum<Integer> {
 
-	NO(0, "无需设置"),
+	NO(0, "请选择"),
 	/**
 	 * 等于 =，例如：WHERE age = 18
 	 */

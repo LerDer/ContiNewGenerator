@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum FormTypeEnum implements BaseEnum<Integer> {
-	NO(0, "无需设置"),
+	NO(0, "请选择"),
 
 	/**
 	 * 输入框
