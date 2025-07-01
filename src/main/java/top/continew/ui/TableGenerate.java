@@ -385,6 +385,7 @@ public class TableGenerate extends DialogWrapper {
 				GenerateConstant.menuPackageName,
 				className + "Menu." + GenerateConstant.menuExtenstion);
 		NotificationUtil.showInfoNotification(project, "生成成功", "生成成功");
+		this.dispose();
 	}
 
 	private void generateFile(Configuration cfg, String templatePath, Map<String, Object> dataModel, String filePath, String packageName, String fileName) {
