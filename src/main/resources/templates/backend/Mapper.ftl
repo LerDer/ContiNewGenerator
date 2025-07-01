@@ -9,4 +9,4 @@ import ${packageName}.model.entity.${classNamePrefix}DO;
 * @author ${author}
 * @since ${datetime}
 */
-public interface ${className} extends BaseMapper<${classNamePrefix}DO> {}
+public interface ${className}Mapper extends BaseMapper<${classNamePrefix}DO> {}

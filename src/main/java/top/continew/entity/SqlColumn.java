@@ -47,7 +47,7 @@ public class SqlColumn implements Serializable {
 	/**
 	 * 字节类型最大长度
 	 */
-	//private BigDecimal characterMaximumLength;
+	private Long characterMaximumLength;
 
 	/**
 	 * 数据类型最大字节数

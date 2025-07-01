@@ -12,4 +12,4 @@ import ${packageName}.model.resp.${classNamePrefix}Resp;
  * @author ${author}
  * @since ${datetime}
  */
-public interface ${className} extends BaseService<${classNamePrefix}Resp, ${classNamePrefix}DetailResp, ${classNamePrefix}Query, ${classNamePrefix}Req> {}
+public interface ${className}Service extends BaseService<${classNamePrefix}Resp, ${classNamePrefix}DetailResp, ${classNamePrefix}Query, ${classNamePrefix}Req> {}

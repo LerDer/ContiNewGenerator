@@ -30,7 +30,7 @@ import java.math.BigDecimal;
 @Data
 @ExcelIgnoreUnannotated
 @Schema(description = "${businessName}详情信息")
-public class ${className} extends BaseDetailResp {
+public class ${className}DetailResp extends BaseDetailResp {
 
     @Serial
     private static final long serialVersionUID = 1L;

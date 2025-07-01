@@ -26,7 +26,7 @@ import java.math.BigDecimal;
  */
 @Data
 @Schema(description = "${businessName}信息")
-public class ${className} extends BaseResp {
+public class ${className}Resp extends BaseResp {
 
     @Serial
     private static final long serialVersionUID = 1L;

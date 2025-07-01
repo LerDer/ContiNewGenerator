@@ -28,7 +28,7 @@ import java.math.BigDecimal;
  */
 @Data
 @TableName("${tableName}")
-public class ${className} extends BaseDO {
+public class ${className}DO extends BaseDO {
 
     @Serial
     private static final long serialVersionUID = 1L;

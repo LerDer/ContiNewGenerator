@@ -22,7 +22,7 @@ public interface GenerateConstant {
 	String reqPackageName = "model.req";
 
 	//Resp
-	String respTemplatePath = "backend/Res.ftl";
+	String respTemplatePath = "backend/Resp.ftl";
 	String respPackageName = "model.resp";
 	String respExcludeFields = "id,createUser,createTime";
 

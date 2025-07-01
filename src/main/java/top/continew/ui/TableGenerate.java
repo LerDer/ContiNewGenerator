@@ -69,7 +69,7 @@ public class TableGenerate extends DialogWrapper {
 
 	static {
 		columnList = new String[]{
-				"序号", "列名称", "字段名称", "列类型", "Java类型", "描述", "列表", "表单", "必填", "查询", "表单类型", "查询方式", "关联字典"
+				"序号", "列名称", "字段名称", "列类型", "Java类型", "描述", "列表", "表单", "必填", "查询", "表单类型", "查询方式", "关联字典", "长度"
 		};
 	}
 
@@ -174,7 +174,6 @@ public class TableGenerate extends DialogWrapper {
 			fieldConfig = new HashMap<>();
 			fieldConfigs.add(fieldConfig);
 			fieldConfig.put("tableName", tableName);
-			fieldConfig.put("columnSize", "");
 			// 遍历列
 			for (int j = 0; j < columnModel.getColumnCount(); j++) {
 				TableColumn column = columnModel.getColumn(j);
@@ -270,6 +269,13 @@ public class TableGenerate extends DialogWrapper {
 						}
 					} else {
 						fieldConfig.put("dictCode", "");
+					}
+				}
+				// 长度
+				if (columnName.equals("长度")) {
+					Object valueAt = columnTable.getValueAt(i, j);
+					if (valueAt != null) {
+						fieldConfig.put("columnSize", Integer.valueOf(valueAt.toString()));
 					}
 				}
 			}
@@ -478,6 +484,7 @@ public class TableGenerate extends DialogWrapper {
 				//关联字典
 				column[12] = "无需设置";
 				data[columns.indexOf(sqlColumn)] = column;
+				column[13] = sqlColumn.getCharacterMaximumLength();
 			}
 
 			// 创建表格模型
@@ -524,6 +531,12 @@ public class TableGenerate extends DialogWrapper {
 			TableColumn dictColumn = columnTable.getColumnModel().getColumn(12);
 			JComboBox<String> dictComboBox = new ComboBox<>(collect.toArray(new String[0]));
 			dictColumn.setCellEditor(new DefaultCellEditor(dictComboBox));
+
+			TableColumn column = columnTable.getColumnModel().getColumn(13);
+			//隐藏列
+			column.setMinWidth(0);
+			column.setMaxWidth(0);
+			column.setWidth(0);
 		}
 
 	}
