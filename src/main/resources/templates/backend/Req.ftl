@@ -51,7 +51,7 @@ public class ${className}Req implements Serializable {
     </#if>
     </#if>
     <#if fieldConfig.fieldType = 'String' && fieldConfig.columnSize??>
-    @Length(max = "${fieldConfig.columnSize?string}", message = "${fieldConfig.comment}长度不能超过 {max} 个字符")
+    @Length(max = ${fieldConfig.columnSize?c}, message = "${fieldConfig.comment}长度不能超过 ${fieldConfig.columnSize?c} 个字符")
     </#if>
     private ${fieldConfig.fieldType} ${fieldConfig.fieldName};
     </#if>
