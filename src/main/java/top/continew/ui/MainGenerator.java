@@ -1,21 +1,17 @@
 package top.continew.ui;
 
-import com.intellij.openapi.module.Module;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.project.ProjectUtil;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Action;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -56,7 +52,7 @@ public class MainGenerator extends DialogWrapper {
 	private JCheckBox postgresCheckBox;
 	private JTextField businessNameTextField;
 	private JLabel businessNameLabel;
-	private JComboBox<String> moduleComboBox;
+	private AutoCompleteComboBox moduleComboBox;
 	private JTextField vuePathTextField;
 	private JButton vueSelectPathButton;
 	private JLabel vuePathLabel;
@@ -76,22 +72,27 @@ public class MainGenerator extends DialogWrapper {
 		cancelButton.setIcon(PluginIconsUtils.testFailed);
 		cancelButton.addActionListener(e -> dispose());
 		nextButton.addActionListener(e -> nextStep(project));
-		
-		vueSelectPathButton.setIcon(PluginIconsUtils.vue);
+
 		//获取当前项目的所有模块信息
-		Module[] modules = ProjectUtil.getModules(project);
-		String[] moduleNames = Arrays.stream(modules).map(Module::getName).toArray(String[]::new);
-		moduleComboBox.setModel(new DefaultComboBoxModel<>(moduleNames));
-		tableNameTextField.addActionListener(e -> seetBusinessName());
+		//Module[] modules = ProjectUtil.getModules(project);
+		//String[] moduleNames = Arrays.stream(modules).map(Module::getName).toArray(String[]::new);
+		//moduleComboBox.setModel(new DefaultComboBoxModel<>(moduleNames));
+		vueSelectPathButton.setIcon(PluginIconsUtils.vue);
 		vueSelectPathButton.addActionListener(e -> chooseVuePath(project));
+		tableNameTextField.addActionListener(e -> setBsniessNameAndPrefix());
 	}
 
-	private void seetBusinessName() {
+	private void setBsniessNameAndPrefix() {
 		if (tableNameTextField.getSelectedItem() != null) {
 			String tableNameSelect = tableNameTextField.getSelectedItem().toString();
 			if (tableNameSelect.indexOf(" - ") > 0) {
 				String tableComment = tableNameSelect.split(" - ")[1];
 				businessNameTextField.setText(tableComment);
+			}
+
+			if (tableNameSelect.indexOf("_") > 0) {
+				String tablePrefix = tableNameSelect.split("_")[0];
+				tablePrefixTextField.setText(tablePrefix + "_");
 			}
 		}
 	}
@@ -106,6 +107,7 @@ public class MainGenerator extends DialogWrapper {
 		String vuePath = instance.getVuePath();
 		if (StringUtils.isNotBlank(vuePath)) {
 			vuePathTextField.setText(vuePath);
+			fillModules(project, LocalFileSystem.getInstance().findFileByIoFile(new File(vuePath)));
 		}
 		String configPath = instance.getConfigPath();
 		if (StringUtils.isNotEmpty(configPath)) {
@@ -119,14 +121,6 @@ public class MainGenerator extends DialogWrapper {
 		String packageName = instance.getPackageName();
 		if (StringUtils.isNotEmpty(packageName)) {
 			this.packageNameTextField.setText(packageName);
-		}
-		String tablePrefix = instance.getTablePrefix();
-		if (StringUtils.isNotEmpty(tablePrefix)) {
-			this.tablePrefixTextField.setText(tablePrefix);
-		}
-		String businessName = instance.getBusinessName();
-		if (StringUtils.isNotEmpty(businessName)) {
-			this.businessNameTextField.setText(businessName);
 		}
 		if (instance.isOverride()) {
 			this.overrideCheckBox.setSelected(true);
@@ -205,14 +199,37 @@ public class MainGenerator extends DialogWrapper {
 		if (null != vf) {
 			String path = vf.getPath();
 			this.vuePathTextField.setText(path);
-			instance.setVuePath(path);  
+			instance.setVuePath(path);
+			fillModules(project, vf);
+		}
+	}
+
+	private void fillModules(Project project, VirtualFile vf) {
+		if (vf == null) {
+			NotificationUtil.showWarningNotification(project, "vue项目路径为空", "vue项目路径为空");
+			return;
+		}
+		String path = vf.getPath();
+		File file = new File(path + "/src/views");
+		List<String> modules = new ArrayList<>();
+		if (file.exists()) {
+			File[] files = file.listFiles();
+			if (files != null) {
+				for (File viewFile : files) {
+					if (viewFile.isDirectory()) {
+						modules.add(viewFile.getName());
+						//moduleComboBox.addItem(viewFile.getName());
+					}
+				}
+				moduleComboBox.setModel(new DefaultComboBoxModel<>(modules.toArray(new String[0])));
+			}
 		}
 	}
 
 	private void fillTableSelect(Project project, VirtualFile vf) {
 		List<SqlTable> sqlTables = DataSourceUtils.getSqlTables(project, vf);
 		if (sqlTables == null) {
-			NotificationUtil.showWarningNotification("查询表失败", "查询表失败结果为空");
+			NotificationUtil.showWarningNotification(project, "查询表失败", "查询表失败结果为空");
 			return;
 		}
 		List<String> tables = sqlTables
