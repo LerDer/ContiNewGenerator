@@ -103,15 +103,18 @@ public class MainGenerator extends DialogWrapper {
 		String projectPath = instance.getProjectPath();
 		if (StringUtils.isNotEmpty(projectPath)) {
 			this.projectPathTextField.setText(projectPath);
+			this.projectPathTextField.setToolTipText(projectPath);
 		}
 		String vuePath = instance.getVuePath();
 		if (StringUtils.isNotBlank(vuePath)) {
 			vuePathTextField.setText(vuePath);
+			vuePathTextField.setToolTipText(vuePath);
 			fillModules(project, LocalFileSystem.getInstance().findFileByIoFile(new File(vuePath)));
 		}
 		String configPath = instance.getConfigPath();
 		if (StringUtils.isNotEmpty(configPath)) {
 			this.configFilePathTextField.setText(configPath);
+			configFilePathTextField.setToolTipText(configPath);
 			fillTableSelect(project, LocalFileSystem.getInstance().findFileByIoFile(new File(configPath)));
 		}
 		String author = instance.getAuthor();
@@ -157,6 +160,7 @@ public class MainGenerator extends DialogWrapper {
 		final VirtualFile vf = uiComponentFacade.showSingleFolderSelectionDialog("选择项目路径", baseDir, baseDir);
 		if (null != vf) {
 			this.projectPathTextField.setText(vf.getPath());
+			this.projectPathTextField.setToolTipText(vf.getPath());
 			instance.setProjectPath(vf.getPath());
 		}
 	}
@@ -178,6 +182,7 @@ public class MainGenerator extends DialogWrapper {
 		if (null != vf) {
 			String path = vf.getPath();
 			this.configFilePathTextField.setText(path);
+			configFilePathTextField.setToolTipText(path);
 			instance.setConfigPath(path);
 			fillTableSelect(project, vf);
 		}
@@ -199,6 +204,7 @@ public class MainGenerator extends DialogWrapper {
 		if (null != vf) {
 			String path = vf.getPath();
 			this.vuePathTextField.setText(path);
+			vuePathTextField.setToolTipText(path);
 			instance.setVuePath(path);
 			fillModules(project, vf);
 		}
