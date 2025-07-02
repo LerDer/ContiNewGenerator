@@ -31,7 +31,7 @@ public class FileChooseUtils {
 		if (title == null) {
 			return null;
 		}
-		final FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor();
+		FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleFolderDescriptor();
 		descriptor.setTitle(title);
 		if (null != roots) {
 			descriptor.setRoots(roots);
@@ -43,7 +43,7 @@ public class FileChooseUtils {
 		if (title == null) {
 			return null;
 		}
-		final FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleFileDescriptor();
+		FileChooserDescriptor descriptor = FileChooserDescriptorFactory.createSingleFileDescriptor();
 		descriptor.setTitle(title);
 		if (null != roots) {
 			descriptor.setRoots(roots);
