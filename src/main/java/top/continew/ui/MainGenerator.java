@@ -9,7 +9,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.Action;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
@@ -224,10 +223,10 @@ public class MainGenerator extends DialogWrapper {
 				for (File viewFile : files) {
 					if (viewFile.isDirectory()) {
 						modules.add(viewFile.getName());
-						//moduleComboBox.addItem(viewFile.getName());
+						moduleComboBox.addItem(viewFile.getName());
 					}
 				}
-				moduleComboBox.setModel(new DefaultComboBoxModel<>(modules.toArray(new String[0])));
+				moduleComboBox.getComboKeyHandler().setList(modules);
 			}
 		}
 	}
@@ -243,7 +242,10 @@ public class MainGenerator extends DialogWrapper {
 				.map(SqlTable::getTableNameComment)
 				.distinct()
 				.toList();
-		tableNameTextField.setModel(new DefaultComboBoxModel<>(tables.toArray(new String[0])));
+		for (String table : tables) {
+			tableNameTextField.addItem(table);
+		}
+		tableNameTextField.getComboKeyHandler().setList(tables);
 	}
 
 	@Override
