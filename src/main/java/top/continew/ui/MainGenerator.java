@@ -67,9 +67,9 @@ public class MainGenerator extends DialogWrapper {
 		configFilePathButton.addActionListener(e -> chooseConfigPath(project));
 		selectPathButton.setIcon(PluginIcons.springBoot);
 		selectPathButton.addActionListener(e -> chooseProjectPath(project));
-		nextButton.setIcon(PluginIcons.sendToTheRight);
 		cancelButton.setIcon(PluginIcons.testFailed);
 		cancelButton.addActionListener(e -> dispose());
+		nextButton.setIcon(PluginIcons.sendToTheRight);
 		nextButton.addActionListener(e -> nextStep(project));
 
 		//获取当前项目的所有模块信息
@@ -124,15 +124,9 @@ public class MainGenerator extends DialogWrapper {
 		if (StringUtils.isNotEmpty(packageName)) {
 			this.packageNameTextField.setText(packageName);
 		}
-		if (instance.isOverride()) {
-			this.overrideCheckBox.setSelected(true);
-		}
-		if (instance.isMysql()) {
-			this.mysqlCheckBox.setSelected(true);
-		}
-		if (instance.isPg()) {
-			this.postgresCheckBox.setSelected(true);
-		}
+		this.overrideCheckBox.setSelected(instance.isOverride());
+		this.mysqlCheckBox.setSelected(instance.isMysql());
+		this.postgresCheckBox.setSelected(instance.isPg());
 	}
 
 	private void nextStep(Project project) {
