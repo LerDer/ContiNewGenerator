@@ -17,11 +17,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import org.apache.commons.lang3.StringUtils;
 import top.continew.entity.SqlTable;
+import top.continew.icon.PluginIcons;
 import top.continew.persistent.ContiNewGeneratorPersistent;
 import top.continew.utils.DataSourceUtils;
 import top.continew.utils.FileChooseUtils;
 import top.continew.utils.NotificationUtil;
-import top.continew.utils.PluginIconsUtils;
 
 /**
  * @author lww
@@ -63,12 +63,12 @@ public class MainGenerator extends DialogWrapper {
 		setResizable(false);
 		this.init();
 		reShow(project);
-		configFilePathButton.setIcon(PluginIconsUtils.yaml);
+		configFilePathButton.setIcon(PluginIcons.yaml);
 		configFilePathButton.addActionListener(e -> chooseConfigPath(project));
-		selectPathButton.setIcon(PluginIconsUtils.springBoot);
+		selectPathButton.setIcon(PluginIcons.springBoot);
 		selectPathButton.addActionListener(e -> chooseProjectPath(project));
-		nextButton.setIcon(PluginIconsUtils.sendToTheRight);
-		cancelButton.setIcon(PluginIconsUtils.testFailed);
+		nextButton.setIcon(PluginIcons.sendToTheRight);
+		cancelButton.setIcon(PluginIcons.testFailed);
 		cancelButton.addActionListener(e -> dispose());
 		nextButton.addActionListener(e -> nextStep(project));
 
@@ -76,7 +76,7 @@ public class MainGenerator extends DialogWrapper {
 		//Module[] modules = ProjectUtil.getModules(project);
 		//String[] moduleNames = Arrays.stream(modules).map(Module::getName).toArray(String[]::new);
 		//moduleComboBox.setModel(new DefaultComboBoxModel<>(moduleNames));
-		vueSelectPathButton.setIcon(PluginIconsUtils.vue);
+		vueSelectPathButton.setIcon(PluginIcons.vue);
 		vueSelectPathButton.addActionListener(e -> chooseVuePath(project));
 		tableNameTextField.addActionListener(e -> setBsniessNameAndPrefix());
 	}

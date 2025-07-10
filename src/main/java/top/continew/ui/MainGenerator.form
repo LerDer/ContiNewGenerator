@@ -136,6 +136,7 @@
             </constraints>
             <properties>
               <text value="选择路径"/>
+              <toolTipText value="请选择前端项目路径"/>
             </properties>
           </component>
         </children>
@@ -229,6 +230,7 @@
               <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <enabled value="false"/>
               <text value=""/>
             </properties>
           </component>
@@ -237,6 +239,7 @@
               <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
+              <enabled value="false"/>
               <text value=""/>
             </properties>
           </component>

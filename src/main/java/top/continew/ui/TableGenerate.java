@@ -41,11 +41,11 @@ import top.continew.entity.SysDict;
 import top.continew.enums.FormTypeEnum;
 import top.continew.enums.JavaTypeEnum;
 import top.continew.enums.QueryTypeEnum;
+import top.continew.icon.PluginIcons;
 import top.continew.persistent.ContiNewGeneratorPersistent;
 import top.continew.utils.CommonUtil;
 import top.continew.utils.DataSourceUtils;
 import top.continew.utils.NotificationUtil;
-import top.continew.utils.PluginIconsUtils;
 
 /**
  * @author lww
@@ -84,8 +84,8 @@ public class TableGenerate extends DialogWrapper {
 		this.setSize(1080, 720);
 		this.init();
 		showTable(project, vf, selectedItem);
-		generateButton.setIcon(PluginIconsUtils.success);
-		returnButton.setIcon(PluginIconsUtils.sendToTheLeft);
+		generateButton.setIcon(PluginIcons.success);
+		returnButton.setIcon(PluginIcons.sendToTheLeft);
 		returnButton.addActionListener(e -> dispose());
 		generateButton.addActionListener(e -> generateCode(project, selectedItem, moduleSelectItem));
 	}

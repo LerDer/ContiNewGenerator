@@ -10,10 +10,9 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableCellRenderer;
-import top.continew.utils.PluginIconsUtils;
+import top.continew.icon.PluginIcons;
 
 /**
  * @author lww
@@ -48,7 +47,7 @@ public class MyHeaderRenderer extends DefaultTableCellRenderer {
 		// 设置图标
 		Icon icon = icons.get(column);
 		if (icon == null) {
-			icon = PluginIconsUtils.logo;
+			icon = PluginIcons.logo;
 		}
 		//label.setIcon(icon);
 

@@ -1,9 +1,9 @@
-package top.continew.utils;
+package top.continew.icon;
 
 import com.intellij.openapi.util.IconLoader;
 import javax.swing.Icon;
 
-public class PluginIconsUtils {
+public class PluginIcons {
 
 	public static final Icon logo = load("/icons/logo.svg");
 
@@ -32,7 +32,7 @@ public class PluginIconsUtils {
 	public static final Icon vue_dark = load("/icons/vue_dark.svg");
 
 	public static Icon load(String iconPath) {
-		return IconLoader.getIcon(iconPath, PluginIconsUtils.class);
+		return IconLoader.getIcon(iconPath, PluginIcons.class);
 	}
 
 }
