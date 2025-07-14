@@ -30,7 +30,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="请选择后端项目路径(src上级)"/>
+            </properties>
           </component>
           <component id="afccf" class="javax.swing.JButton" binding="selectPathButton">
             <constraints>
@@ -55,7 +57,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="请输入作者"/>
+            </properties>
           </component>
           <component id="a3529" class="top.continew.ui.AutoCompleteComboBox" binding="tableNameTextField">
             <constraints>
@@ -87,7 +91,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="请选择 application-dev.yml 文件"/>
+            </properties>
           </component>
           <component id="505ce" class="javax.swing.JButton" binding="configFilePathButton">
             <constraints>
@@ -112,7 +118,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="请选择前端项目路径(src上级)"/>
+            </properties>
           </component>
           <component id="953f8" class="javax.swing.JButton" binding="vueSelectPathButton">
             <constraints>
@@ -137,7 +145,9 @@
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
-            <properties/>
+            <properties>
+              <toolTipText value="请选择包名"/>
+            </properties>
           </component>
           <component id="116e3" class="javax.swing.JButton" binding="selectPackageButton">
             <constraints>
