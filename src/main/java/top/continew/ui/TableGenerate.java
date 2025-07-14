@@ -286,6 +286,24 @@ public class TableGenerate extends DialogWrapper {
 						} catch (NumberFormatException ignored) {
 						}
 					}
+					continue;
+				}
+				if (columnName.equals(TableHeaderEnum.IS_PRIMARY.getDescription())) {
+					Object valueAt = columnTable.getValueAt(i, j);
+					if (Boolean.TRUE.equals(valueAt)) {
+						fieldConfig.put("isPrimary", Boolean.TRUE);
+					} else {
+						fieldConfig.put("isPrimary", Boolean.FALSE);
+					}
+					continue;
+				}
+				if (columnName.equals(TableHeaderEnum.IS_NULLABLE.getDescription())) {
+					Object valueAt = columnTable.getValueAt(i, j);
+					if (Boolean.TRUE.equals(valueAt)) {
+						fieldConfig.put("isNotNull", Boolean.TRUE);
+					} else {
+						fieldConfig.put("isNotNull", Boolean.TRUE);
+					}
 				}
 			}
 		}
@@ -513,6 +531,8 @@ public class TableGenerate extends DialogWrapper {
 				column[12] = GenerateConstant.DEFAULT_TEXT;
 				data[columns.indexOf(sqlColumn)] = column;
 				column[13] = sqlColumn.getCharacterMaximumLength();
+				column[14] = sqlColumn.isPrimaryKey();
+				column[15] = sqlColumn.isNULLAble();
 			}
 
 			// 创建表格模型

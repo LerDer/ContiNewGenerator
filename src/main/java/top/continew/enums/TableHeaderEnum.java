@@ -96,7 +96,21 @@ public enum TableHeaderEnum implements TableHeaderEnumMethod {
 		public boolean isVisible() {
 			return false;
 		}
-	};
+	},
+	IS_PRIMARY(14, "是否主键") {
+		@Override
+		public boolean isVisible() {
+			return false;
+		}
+	},
+	IS_NULLABLE(15, "是否可为空") {
+		@Override
+		public boolean isVisible() {
+			return false;
+		}
+	},
+	//
+	;
 
 	private final int index;
 	private final String description;
