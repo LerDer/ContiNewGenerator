@@ -35,6 +35,7 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tools.ant.util.DateUtils;
+import org.jetbrains.annotations.NotNull;
 import top.continew.constant.GenerateConstant;
 import top.continew.entity.SqlColumn;
 import top.continew.entity.SysDict;
@@ -595,7 +596,7 @@ public class TableGenerate extends DialogWrapper {
 	}
 
 	@Override
-	protected Action[] createActions() {
+	protected Action @NotNull [] createActions() {
 		return new Action[0];
 	}
 }
