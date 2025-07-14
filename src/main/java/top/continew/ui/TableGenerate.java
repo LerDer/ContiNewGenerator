@@ -168,7 +168,6 @@ public class TableGenerate extends DialogWrapper {
 			for (int j = 0; j < columnModel.getColumnCount(); j++) {
 				TableColumn column = columnModel.getColumn(j);
 				String columnName = column.getHeaderValue().toString();
-				boolean isStr = false;
 				if (columnName.equals(TableHeaderEnum.INDEX.getDescription())) {
 					fieldConfig.put("id", columnTable.getValueAt(i, j).toString());
 					fieldConfig.put("fieldSort", columnTable.getValueAt(i, j).toString());
