@@ -430,7 +430,7 @@ public class TableGenerate extends DialogWrapper {
 				SqlColumn sqlColumn = columns.get(i);
 				Object[] column = new Object[COLUMN_LIST.length];
 				//序号
-				column[0] = String.valueOf(sqlColumn.getOrdinalPosition());
+				column[0] = i + 1;
 				//名称
 				column[1] = sqlColumn.getColumnName();
 				//字段名称
