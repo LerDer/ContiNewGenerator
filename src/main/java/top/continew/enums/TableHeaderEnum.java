@@ -5,26 +5,84 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public enum TableHeaderEnum {
-	INDEX(0, "序号", false, false),
-	COLUMN_NAME(1, "列名", false, false),
-	CODE_NAME(2, "字段名称", false, true),
-	COLUMN_TYPE(3, "类型", false, false),
-	CODE_TYPE(4, "Java类型", false, true),
-	DESCRIPTION(5, "描述", false, true),
+public enum TableHeaderEnum implements TableHeaderEnumMethod {
 
-	TABLE_LIST(6, "列表", true, true),
-	TABLE_FORM(7, "表单", true, true),
-	REQUIRED(8, "必填", true, true),
-	QUERY_FIELD(9, "查询", true, true),
-	QUERY_TYPE(10, "查询方式", false, true),
-	FORM_SHOW_TYPE(11, "表单类型", false, true),
-	RELATION_DICT(12, "关联字典", false, true),
-	COLUMN_SIZE(13, "长度", false, false);
+	INDEX(0, "序号"){
+		@Override
+		public boolean isEditable() {
+			return false;
+		}
+	},
+	COLUMN_NAME(1, "列名"){
+		@Override
+		public boolean isEditable() {
+			return false;
+		}
+	},
+	CODE_NAME(2, "字段名称") {
+	},
+	COLUMN_TYPE(3, "类型"){
+		@Override
+		public boolean isEditable() {
+			return false;
+		}
+	},
+	CODE_TYPE(4, "Java类型"),
+	DESCRIPTION(5, "描述"),
+
+	TABLE_LIST(6, "列表") {
+		@Override
+		public boolean isCheckbox() {
+			return true;
+		}
+
+	},
+	TABLE_FORM(7, "表单") {
+		@Override
+		public boolean isCheckbox() {
+			return true;
+		}
+
+	},
+	REQUIRED(8, "必填") {
+		@Override
+		public boolean isCheckbox() {
+			return true;
+		}
+
+	},
+	QUERY_FIELD(9, "查询") {
+		@Override
+		public boolean isCheckbox() {
+			return true;
+		}
+
+	},
+	QUERY_TYPE(10, "查询方式"),
+	FORM_SHOW_TYPE(11, "表单类型"),
+	RELATION_DICT(12, "关联字典"),
+	COLUMN_SIZE(13, "长度") {
+		@Override
+		public boolean isVisible() {
+			return false;
+		}
+	};
 
 	private final int index;
 	private final String description;
-	private final boolean checkbox;
-	private final boolean editable;
 
+	@Override
+	public boolean isCheckbox() {
+		return false;
+	}
+
+	@Override
+	public boolean isEditable() {
+		return true;
+	}
+
+	@Override
+	public boolean isVisible() {
+		return true;
+	}
 }

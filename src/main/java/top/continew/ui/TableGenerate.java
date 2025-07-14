@@ -510,13 +510,13 @@ public class TableGenerate extends DialogWrapper {
 					if (sqlColumn.isString()) {
 						column[11] = "输入框";
 						} else if (sqlColumn.isDate()) {
-							column[11] = "日期框";
+							column[11] = FormTypeEnum.DATE.getDescription();
 						} else if (sqlColumn.isDatetime()) {
-							column[11] = "日期时间框";
+							column[11] = FormTypeEnum.DATE_TIME.getDescription();
 						} else if (sqlColumn.isBool()) {
-							column[11] = "开关";
+							column[11] = FormTypeEnum.SWITCH.getDescription();
 						} else if (sqlColumn.isNumber()) {
-							column[11] = "数字输入框";
+							column[11] = FormTypeEnum.INPUT_NUMBER.getDescription();
 					} else {
 						column[11] = DEFAULT_TEXT;
 					}
@@ -541,6 +541,20 @@ public class TableGenerate extends DialogWrapper {
 					}
 					return super.getColumnClass(columnIndex);
 				}
+
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					List<Integer> collect = Arrays.stream(TableHeaderEnum.values())
+							.filter(TableHeaderEnum::isEditable)
+							.map(TableHeaderEnum::getIndex)
+							.toList();
+					if (collect.contains(column)) {
+						return true;
+					}
+					return false;
+				}
+
+
 			};
 
 			MyHeaderRenderer headerRenderer = new MyHeaderRenderer();
@@ -553,7 +567,7 @@ public class TableGenerate extends DialogWrapper {
 			columnTable.getTableHeader().repaint();
 			columnTable.setModel(model);
 			columnTable.repaint();
-
+			columnTable.setRowHeight(30);
 			columnTable.getColumnModel().getColumn(5).setPreferredWidth(100);
 
 			// 设置表单类型为下拉框
@@ -575,12 +589,17 @@ public class TableGenerate extends DialogWrapper {
 			TableColumn dictColumn = columnTable.getColumnModel().getColumn(12);
 			JComboBox<String> dictComboBox = new ComboBox<>(collect.toArray(new String[0]));
 			dictColumn.setCellEditor(new DefaultCellEditor(dictComboBox));
-
-			TableColumn column = columnTable.getColumnModel().getColumn(13);
-			//隐藏列
-			column.setMinWidth(0);
-			column.setMaxWidth(0);
-			column.setWidth(0);
+			List<Integer> list = Arrays.stream(TableHeaderEnum.values())
+					.filter(e -> !e.isVisible())
+					.map(TableHeaderEnum::getIndex)
+					.toList();
+			for (Integer i : list) {
+				TableColumn column = columnTable.getColumnModel().getColumn(i);
+				//隐藏列
+				column.setMinWidth(0);
+				column.setMaxWidth(0);
+				column.setWidth(0);
+			}
 		}
 
 	}
