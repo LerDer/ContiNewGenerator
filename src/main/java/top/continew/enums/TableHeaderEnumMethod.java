@@ -12,4 +12,8 @@ public interface TableHeaderEnumMethod {
 
 	boolean isVisible();
 
+	boolean isComboBox();
+
+	String[] comboBoxOptions();
+
 }

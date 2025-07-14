@@ -2,32 +2,42 @@ package top.continew.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import top.continew.constant.GenerateConstant;
 
 @Getter
 @RequiredArgsConstructor
 public enum TableHeaderEnum implements TableHeaderEnumMethod {
 
-	INDEX(0, "序号"){
+	INDEX(0, "序号") {
 		@Override
 		public boolean isEditable() {
 			return false;
 		}
 	},
-	COLUMN_NAME(1, "列名"){
+	COLUMN_NAME(1, "列名") {
 		@Override
 		public boolean isEditable() {
 			return false;
 		}
 	},
-	CODE_NAME(2, "字段名称") {
-	},
-	COLUMN_TYPE(3, "类型"){
+	CODE_NAME(2, "字段名称"),
+	COLUMN_TYPE(3, "类型") {
 		@Override
 		public boolean isEditable() {
 			return false;
 		}
 	},
-	CODE_TYPE(4, "Java类型"),
+	CODE_TYPE(4, "Java类型") {
+		@Override
+		public boolean isComboBox() {
+			return true;
+		}
+
+		@Override
+		public String[] comboBoxOptions() {
+			return GenerateConstant.JAVA_TYPE_OPTIONS;
+		}
+	},
 	DESCRIPTION(5, "描述"),
 
 	TABLE_LIST(6, "列表") {
@@ -58,8 +68,28 @@ public enum TableHeaderEnum implements TableHeaderEnumMethod {
 		}
 
 	},
-	QUERY_TYPE(10, "查询方式"),
-	FORM_SHOW_TYPE(11, "表单类型"),
+	QUERY_TYPE(10, "查询方式") {
+		@Override
+		public boolean isComboBox() {
+			return true;
+		}
+
+		@Override
+		public String[] comboBoxOptions() {
+			return GenerateConstant.QUERY_TYPE_OPTIONS;
+		}
+	},
+	FORM_SHOW_TYPE(11, "表单类型") {
+		@Override
+		public boolean isComboBox() {
+			return true;
+		}
+
+		@Override
+		public String[] comboBoxOptions() {
+			return GenerateConstant.FORM_TYPE_OPTIONS;
+		}
+	},
 	RELATION_DICT(12, "关联字典"),
 	COLUMN_SIZE(13, "长度") {
 		@Override
@@ -85,4 +115,15 @@ public enum TableHeaderEnum implements TableHeaderEnumMethod {
 	public boolean isVisible() {
 		return true;
 	}
+
+	@Override
+	public boolean isComboBox() {
+		return false;
+	}
+
+	@Override
+	public String[] comboBoxOptions() {
+		return new String[0];
+	}
+
 }
