@@ -567,7 +567,7 @@ public class TableGenerate extends DialogWrapper {
 			columnTable.getTableHeader().repaint();
 			columnTable.setModel(model);
 			columnTable.repaint();
-			columnTable.setRowHeight(30);
+			columnTable.setRowHeight(25);
 			columnTable.getColumnModel().getColumn(5).setPreferredWidth(100);
 
 			// 设置表单类型为下拉框
