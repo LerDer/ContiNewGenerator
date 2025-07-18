@@ -28,6 +28,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -46,7 +47,6 @@ import top.continew.icon.PluginIcons;
 import top.continew.persistent.ContiNewGeneratorPersistent;
 import top.continew.utils.CommonUtil;
 import top.continew.utils.DataSourceUtils;
-import top.continew.utils.NotificationUtil;
 
 /**
  * @author lww
@@ -413,7 +413,8 @@ public class TableGenerate extends DialogWrapper {
 					resourcesPath,
 					GenerateConstant.menuPackageName,
 					className + "Menu" + GenerateConstant.menuExtenstion);
-			NotificationUtil.showInfoNotification(project, "生成成功", "生成成功");
+			//NotificationUtil.showInfoNotification(project, "生成成功", "生成成功");
+			JOptionPane.showMessageDialog(rootPanel, "success", "生成成功!", JOptionPane.INFORMATION_MESSAGE);
 		}
 		this.dispose();
 	}
