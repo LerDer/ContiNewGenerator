@@ -61,7 +61,7 @@ public class MainGenerator extends DialogWrapper {
 	public MainGenerator(Project project) {
 		super(project);
 		setTitle("ContiNew Generator");
-		setModal(true);
+		setModal(false);
 		setResizable(false);
 		this.init();
 		reShow(project);
