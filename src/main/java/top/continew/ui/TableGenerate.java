@@ -35,7 +35,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.tools.ant.util.DateUtils;
 import org.jetbrains.annotations.NotNull;
 import top.continew.constant.GenerateConstant;
 import top.continew.entity.SqlColumn;
@@ -47,6 +46,7 @@ import top.continew.icon.PluginIcons;
 import top.continew.persistent.ContiNewGeneratorPersistent;
 import top.continew.utils.CommonUtil;
 import top.continew.utils.DataSourceUtils;
+import top.continew.utils.DateUtils;
 
 /**
  * @author lww
