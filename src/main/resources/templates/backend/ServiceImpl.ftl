@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import top.continew.admin.common.base.service.BaseServiceImpl;
 import ${packageName}.mapper.${classNamePrefix}Mapper;
-import ${packageName}.model.entity.${classNamePrefix};
+import ${packageName}.model.entity.${classNamePrefix}DO;
 import ${packageName}.model.query.${classNamePrefix}Query;
 import ${packageName}.model.req.${classNamePrefix}Req;
 import ${packageName}.model.resp.${classNamePrefix}DetailResp;

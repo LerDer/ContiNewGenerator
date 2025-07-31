@@ -107,8 +107,8 @@
 
 <script setup lang="ts">
 import type { TableInstance } from '@arco-design/web-vue'
-import ${classNamePrefix}AddModal from './'
-import ${classNamePrefix}DetailDrawer from './'
+import ${classNamePrefix}AddModal from './${classNamePrefix}AddModal.vue'
+import ${classNamePrefix}DetailDrawer from './${classNamePrefix}DetailDrawer.vue'
 import {useDownload, useTable} from '@/hooks'
 import {useDict} from '@/hooks/app'
 import {isMobile} from '@/utils'
