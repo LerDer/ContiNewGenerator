@@ -26,9 +26,9 @@
           @change="search"
         />
 	  <#elseif fieldConfig.formType == "RADIO"><#-- 单选框 -->
-		<a-radio-group 
-          v-model="queryForm.${fieldConfig.fieldName}" 
-          :options="${fieldConfig.dictCode!'dictKey 或者自定义数组'}" 
+		<a-radio-group
+          v-model="queryForm.${fieldConfig.fieldName}"
+          :options="${fieldConfig.dictCode!'dictKey 或者自定义数组'}"
           @change="search"
         />
 	  <#elseif fieldConfig.formType == "DATE"><#-- 日期框 -->
@@ -146,7 +146,12 @@ const columns: TableInstance['columns'] = [
    <#elseif fieldConfig.fieldName=="updateUser"  >
   { title: '${fieldConfig.comment}', dataIndex: 'updateUserString', slotName: '${fieldConfig.fieldName}' },
   <#else>
-  { title: '${fieldConfig.comment}', dataIndex: '${fieldConfig.fieldName}', slotName: '${fieldConfig.fieldName}' },
+  <#if fieldConfig.comment?index_of("//") gt 0>
+     <#assign comment = fieldConfig.comment?substring(0,fieldConfig.comment?index_of("//"))>
+  <#else>
+     <#assign comment = fieldConfig.comment>
+  </#if>
+  { title: '${comment}', dataIndex: '${fieldConfig.fieldName}', slotName: '${fieldConfig.fieldName}' },
   </#if>
 </#if>
 </#list>

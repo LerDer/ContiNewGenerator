@@ -43,8 +43,13 @@ const [form, resetForm] = useResetReactive({
 const columns: ColumnItem[] = reactive([
 <#list fieldConfigs as fieldConfig>
   <#if fieldConfig.showInForm>
+  <#if fieldConfig.comment?index_of("//") gt 0>
+     <#assign comment = fieldConfig.comment?substring(0,fieldConfig.comment?index_of("//"))>
+  <#else>
+     <#assign comment = fieldConfig.comment>
+  </#if>
   {
-    label: '${fieldConfig.comment}',
+    label: '${comment}',
     field: '${fieldConfig.fieldName}',
     <#if fieldConfig.formType = 'INPUT'>
     type: 'input',

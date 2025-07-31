@@ -2,12 +2,17 @@
   <a-drawer v-model:visible="visible" title="${businessName}详情" :width="width >= 600 ? 600 : '100%'" :footer="false">
     <a-descriptions :column="2" size="large" class="general-description">
       <#list fieldConfigs as fieldConfig>
+        <#if fieldConfig.comment?index_of("//") gt 0>
+     	<#assign comment = fieldConfig.comment?substring(0,fieldConfig.comment?index_of("//"))>
+  		<#else>
+     	<#assign comment = fieldConfig.comment>
+  		</#if>
       <#if fieldConfig.dictCode?? && fieldConfig.dictCode != "">
-      <a-descriptions-item label="${fieldConfig.comment}">
+      <a-descriptions-item label="${comment}">
         <GiCellTag :value="dataDetail?.${fieldConfig.fieldName}" :dict="${fieldConfig.dictCode}" />
       </a-descriptions-item>
       <#else>
-      <a-descriptions-item label="${fieldConfig.comment}">{{ dataDetail?.${fieldConfig.fieldName} }}</a-descriptions-item>
+      <a-descriptions-item label="${comment}">{{ dataDetail?.${fieldConfig.fieldName} }}</a-descriptions-item>
       </#if>
       <#if fieldConfig.fieldName = 'createUser'>
       <a-descriptions-item label="创建人">{{ dataDetail?.createUserString }}</a-descriptions-item>
