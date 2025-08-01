@@ -11,8 +11,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum CommonTemplateEnum implements TemplateEnum {
 
-	MapperXml400("backend/MapperXml.ftl", "mapper", "%sMapper.xml", "4.0.0"),
-	Menu400("backend/Menu.ftl", "sql", "%sMenu.sql", "4.0.0")
+	MapperXml400("400/backend/MapperXml.ftl", "mapper", "%sMapper.xml", "4.0.0"),
+	Menu400("400/backend/Menu.ftl", "sql", "%sMenu.sql", "4.0.0")
 	//
 	;
 
