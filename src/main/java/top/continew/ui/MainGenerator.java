@@ -57,6 +57,7 @@ public class MainGenerator extends DialogWrapper {
 	private JButton vueSelectPathButton;
 	private JButton selectPackageButton;
 	private JLabel vuePathLabel;
+	private AutoCompleteComboBox versionComboBox;
 
 	public MainGenerator(Project project) {
 		super(project);
@@ -83,6 +84,18 @@ public class MainGenerator extends DialogWrapper {
 		tableNameTextField.addActionListener(e -> setBusinessNameAndPrefix());
 		selectPackageButton.setIcon(PluginIcons.package1);
 		selectPackageButton.addActionListener(e -> choosePackage(project));
+		initVersion();
+	}
+
+	private void initVersion() {
+		List<String> versions = new ArrayList<>();
+		versions.add("3.5.0");
+		versions.add("3.6.0");
+		versions.add("3.7.0-");
+		versions.add("4.0.0-多租户");
+		versions.forEach(version -> versionComboBox.addItem(version));
+		versionComboBox.setSelectedIndex(2);
+		versionComboBox.getComboKeyHandler().setList(versions);
 	}
 
 	private void choosePackage(Project project) {
