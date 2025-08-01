@@ -11,4 +11,6 @@ public interface TemplateEnum {
 	String getVersion();
 
 	boolean firstToLowerCase();
+
+	boolean className2Folder();
 }

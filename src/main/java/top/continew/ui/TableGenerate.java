@@ -330,27 +330,27 @@ public class TableGenerate extends DialogWrapper {
 			Arrays.stream(JavaTemplateEnum.values())
 					.filter(e -> e.getVersion().equals(version))
 					.forEach(e -> {
-				String fileName = e.getFileName().formatted(finalClassName);
-				if (e.firstToLowerCase()) {
-					fileName = CommonUtil.firstToLowerCase(fileName);
-				}
-				String packageName1 = e.getPackageName().formatted(finalClassName).replace(".", File.separator);
-				String templatePath = e.getTemplatePath();
-				File file = new File(javaTargetPath + File.separator + packageName1 + File.separator + fileName);
-				generateFile(cfg, dataModel, templatePath, file);
-			});
+						String fileName = e.getFileName().formatted(finalClassName);
+						if (e.firstToLowerCase()) {
+							fileName = CommonUtil.firstToLowerCase(fileName);
+						}
+						String packageName1 = e.getPackageName().formatted(finalClassName).replace(".", File.separator);
+						String templatePath = e.getTemplatePath();
+						File file = new File(javaTargetPath + File.separator + packageName1 + File.separator + fileName);
+						generateFile(cfg, dataModel, templatePath, file);
+					});
 			Arrays.stream(CommonTemplateEnum.values())
 					.filter(e -> e.getVersion().equals(version))
 					.forEach(e -> {
-				String fileName = e.getFileName().formatted(finalClassName);
-				if (e.firstToLowerCase()) {
-					fileName = CommonUtil.firstToLowerCase(fileName);
-				}
-				String packageName1 = e.getPackageName().formatted(finalClassName).replace(".", File.separator);
-				String templatePath = e.getTemplatePath();
-				File file = new File(resourcesPath + File.separator + packageName1 + File.separator + fileName);
-				generateFile(cfg, dataModel, templatePath, file);
-			});
+						String fileName = e.getFileName().formatted(finalClassName);
+						if (e.firstToLowerCase()) {
+							fileName = CommonUtil.firstToLowerCase(fileName);
+						}
+						String packageName1 = e.getPackageName().formatted(finalClassName).replace(".", File.separator);
+						String templatePath = e.getTemplatePath();
+						File file = new File(resourcesPath + File.separator + packageName1 + File.separator + fileName);
+						generateFile(cfg, dataModel, templatePath, file);
+					});
 		}
 		if (StringUtils.isNotBlank(vuePath)) {
 			String finalClassName1 = className;
@@ -363,6 +363,9 @@ public class TableGenerate extends DialogWrapper {
 						}
 						String packageName1 = e.getPackageName().formatted(finalClassName1).replace(".", File.separator)
 								+ (StringUtils.isNotBlank(moduleSelectItem + "") ? File.separator + moduleSelectItem : "");
+						if (e.className2Folder()) {
+							packageName1 += File.separator + CommonUtil.firstToLowerCase(finalClassName1);
+						}
 						String templatePath = e.getTemplatePath();
 						File file = new File(vuePath + File.separator + packageName1 + File.separator + fileName);
 						generateFile(cfg, dataModel, templatePath, file);
@@ -383,7 +386,7 @@ public class TableGenerate extends DialogWrapper {
 			template.process(dataModel, out);
 			// 输出结果
 			String result = out.toString();
-			System.out.println(result);
+			System.out.println(file.getPath() + ":" + result);
 			IdeaCodeFormatter.formatFile(file);
 		} catch (IOException | TemplateException e) {
 			throw new RuntimeException(e);
