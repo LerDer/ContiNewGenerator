@@ -155,6 +155,7 @@ public class MainGenerator extends DialogWrapper {
 		this.overrideCheckBox.setSelected(instance.isOverride());
 		this.mysqlCheckBox.setSelected(instance.isMysql());
 		this.postgresCheckBox.setSelected(instance.isPg());
+		this.versionComboBox.setSelectedItem(instance.getVersion());
 	}
 
 	private void nextStep(Project project) {
@@ -168,6 +169,7 @@ public class MainGenerator extends DialogWrapper {
 		instance.setOverride(overrideCheckBox.isSelected());
 		instance.setMysql(mysqlCheckBox.isSelected());
 		instance.setPg(postgresCheckBox.isSelected());
+		instance.setVersion(versionComboBox.getSelectedItem().toString());
 		instance.setTablePrefix(tablePrefixTextField.getText());
 		TableGenerate tableGenerate = new TableGenerate(project, LocalFileSystem.getInstance().findFileByIoFile(new File(this.configFilePathTextField.getText())),
 				this.tableNameTextField.getSelectedItem(), moduleComboBox.getSelectedItem());

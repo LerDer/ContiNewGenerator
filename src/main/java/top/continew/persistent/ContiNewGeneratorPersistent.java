@@ -24,6 +24,7 @@ public class ContiNewGeneratorPersistent implements PersistentStateComponent<Con
 	private String author;
 	private String packageName;
 	private String businessName;
+	private String version;
 
 	private boolean override;
 	private boolean mysql;
