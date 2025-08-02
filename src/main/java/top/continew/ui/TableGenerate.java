@@ -87,8 +87,8 @@ public class TableGenerate extends DialogWrapper {
 		String packageName = instance.getPackageName();
 		String businessName = instance.getBusinessName();
 		boolean isOverride = instance.isOverride();
-		boolean isMysql = instance.isMysql();
-		boolean isPg = instance.isPg();
+		boolean isMySQL = instance.isMysql();
+		boolean isPostgreSQL = instance.isPg();
 		String tablePrefix = instance.getTablePrefix();
 		String version = instance.getVersion();
 
@@ -114,8 +114,8 @@ public class TableGenerate extends DialogWrapper {
 		Map<String, Object> dataModel = new HashMap<>();
 
 		List<Object> dictCodes = new ArrayList<>();
-		dataModel.put("isMysql", isMysql);
-		dataModel.put("isPostgreSQL", isPg);
+		dataModel.put("isMySQL", isMySQL);
+		dataModel.put("isPostgreSQL", isPostgreSQL);
 		dataModel.put("dictCodes", dictCodes);
 		//表名称
 		dataModel.put("tableName", tableName);
