@@ -114,6 +114,8 @@ public class TableGenerate extends DialogWrapper {
 		Map<String, Object> dataModel = new HashMap<>();
 
 		List<Object> dictCodes = new ArrayList<>();
+		dataModel.put("isMysql", isMysql);
+		dataModel.put("isPostgreSQL", isPg);
 		dataModel.put("dictCodes", dictCodes);
 		//表名称
 		dataModel.put("tableName", tableName);
@@ -337,7 +339,9 @@ public class TableGenerate extends DialogWrapper {
 						String packageName1 = e.getPackageName().formatted(finalClassName).replace(".", File.separator);
 						String templatePath = e.getTemplatePath();
 						File file = new File(javaTargetPath + File.separator + packageName1 + File.separator + fileName);
-						generateFile(cfg, dataModel, templatePath, file);
+						if (!file.exists() || isOverride) {
+							generateFile(cfg, dataModel, templatePath, file);
+						}
 					});
 			Arrays.stream(CommonTemplateEnum.values())
 					.filter(e -> e.getVersion().equals(version))
@@ -349,7 +353,9 @@ public class TableGenerate extends DialogWrapper {
 						String packageName1 = e.getPackageName().formatted(finalClassName).replace(".", File.separator);
 						String templatePath = e.getTemplatePath();
 						File file = new File(resourcesPath + File.separator + packageName1 + File.separator + fileName);
-						generateFile(cfg, dataModel, templatePath, file);
+						if (!file.exists() || isOverride) {
+							generateFile(cfg, dataModel, templatePath, file);
+						}
 					});
 		}
 		if (StringUtils.isNotBlank(vuePath)) {
@@ -368,7 +374,9 @@ public class TableGenerate extends DialogWrapper {
 						}
 						String templatePath = e.getTemplatePath();
 						File file = new File(vuePath + File.separator + packageName1 + File.separator + fileName);
-						generateFile(cfg, dataModel, templatePath, file);
+						if (!file.exists() || isOverride) {
+							generateFile(cfg, dataModel, templatePath, file);
+						}
 					});
 		}
 		JOptionPane.showMessageDialog(rootPanel, "代码生成成功,快去看看吧!", "生成成功!", JOptionPane.INFORMATION_MESSAGE);
