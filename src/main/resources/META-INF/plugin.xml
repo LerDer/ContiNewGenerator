@@ -14,8 +14,20 @@
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+    The code generator for <a href="https://gitcode.com/continew/continew-admin">ContiNew</a>
+    <br/>
+    support 3.5.0, 3.6.0, 3.7.0, 4.0.0 verison.
+    <br/>
+    Support MySQL and PostgreSQL database.
+    <br/>
+
+    <br/>
+    为<a href="https://gitcode.com/continew/continew-admin">ContiNew</a>量身定制的代码生成器
+    <br/>
+    支持3.5.0、3.6.0、3.7.0、4.0.0版本。
+    <br/>
+    支持MySQL和PostgreSQL数据库。
+    <br/>
   ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
