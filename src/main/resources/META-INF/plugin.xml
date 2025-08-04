@@ -14,19 +14,35 @@
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-    The code generator for <a href="https://gitcode.com/continew/continew-admin">ContiNew</a>
+    <a href="https://gitcode.com/continew/continew-admin">ContiNew Admin</a> Code Generator
     <br/>
-    support 3.5.0, 3.6.0, 3.7.0, 4.0.0 verison.
+    Version Support: 3.5.0 | 3.6.0 | 3.7.0 | 4.0.0
     <br/>
-    Support MySQL and PostgreSQL database.
+    Database Support: MySQL, PostgreSQL
+    <br/>
+    Automatic parsing of database configuration information, connecting to the database
+    <br/>
+    Configurable output directories (front-end & back-end)
+    <br/>
+    Generates complete code to specified paths
+    <br/>
+    Uses ContiNew Admin template standards
+    <br/>
+    Direct code generation with one-click operation
     <br/>
 
+
     <br/>
-    为<a href="https://gitcode.com/continew/continew-admin">ContiNew</a>量身定制的代码生成器
+    为<a href="https://gitcode.com/continew/continew-admin">ContiNew Admin</a>量身定制的代码生成器
     <br/>
     支持3.5.0、3.6.0、3.7.0、4.0.0版本。
     <br/>
     支持MySQL和PostgreSQL数据库。
+    <br/>
+    根据配置文件自动解析数据库配置信息, 连接数据库
+    <br/>
+    设置前端, 后端目录后, 一键生成前端, 后端代码到制定目录,
+    生成的代码采用 ContiNew Admin 项目的代码生成器模板, 生成后可直接使用
     <br/>
   ]]></description>
 
