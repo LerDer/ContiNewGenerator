@@ -23,7 +23,7 @@ public interface GenerateConstant {
 	//DO
 	String doTemplatePath = "backend/Entity.ftl";
 	String doPackageName = "model.entity";
-	String doExcludeFields = "id,createUser,createTime,updateUser,updateTime";
+	String doExcludeFields = "createUser,createTime,updateUser,updateTime";
 
 	//Query
 	String queryTemplatePath = "backend/Query.ftl";
