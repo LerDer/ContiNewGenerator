@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.swing.Action;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
@@ -77,7 +78,7 @@ public class TableGenerate extends DialogWrapper {
 	public TableGenerate(Project project, VirtualFile vf, Object selectedItem, Object moduleSelectItem) {
 		super(project);
 		setTitle("ContiNew Generator");
-		setModal(true);
+		setModal(false);
 		setResizable(false);
 		this.setSize(1080, 720);
 		this.init();
@@ -97,11 +98,14 @@ public class TableGenerate extends DialogWrapper {
 
 	private Map<String, Object> getDataModel(Project project, Object selectedItem, Object moduleSelectItem) {
 		ContiNewGeneratorPersistent instance = ContiNewGeneratorPersistent.getInstance(project);
+		String projectPath = instance.getProjectPath();
+		String vuePath = instance.getVuePath();
 		String author = instance.getAuthor();
 		String packageName = instance.getPackageName();
 		String businessName = instance.getBusinessName();
 		String dbType = instance.getDbType();
 		String tablePrefix = instance.getTablePrefix();
+		String version = instance.getVersion();
 
 		String tableName;
 		String tableComment = "";
@@ -321,6 +325,14 @@ public class TableGenerate extends DialogWrapper {
 					}
 				}
 			}
+		}
+		fileList.clear();
+		if (StringUtils.isNotBlank(projectPath)) {
+			fileList.addAll(Stream.of(JavaTemplateEnum.values()).filter(e -> e.getVersion().equals(version)).toList());
+			fileList.addAll(Stream.of(CommonTemplateEnum.values()).filter(e -> e.getVersion().equals(version)).toList());
+		}
+		if (StringUtils.isNotBlank(vuePath)) {
+			fileList.addAll(Stream.of(VueTemplateEnum.values()).filter(e -> e.getVersion().equals(version)).toList());
 		}
 		return dataModel;
 	}

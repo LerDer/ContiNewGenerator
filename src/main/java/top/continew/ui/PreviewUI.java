@@ -74,8 +74,8 @@ public class PreviewUI extends DialogWrapper {
 			TemplateEnum templateEnum1 = fileList.getSelectedValue();
 			// 使用保存的Editor引用来获取文本内容
 			if (currentEditor != null) {
-				String className = dataModel.get("ClassName") + "";
-				String moduleName = dataModel.get("moduleName") + "";
+				String className = dataModel.get("className") + "";
+				String moduleName = dataModel.get("apiModuleName") + "";
 				String text = currentEditor.getDocument().getText();
 				TableGenerate.generateCode(project, text, templateEnum1, className, moduleName);
 			}
