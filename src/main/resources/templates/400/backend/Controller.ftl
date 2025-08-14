@@ -13,6 +13,8 @@ import ${packageName}.model.req.${classNamePrefix}Req;
 import ${packageName}.model.resp.${classNamePrefix}DetailResp;
 import ${packageName}.model.resp.${classNamePrefix}Resp;
 import ${packageName}.service.${classNamePrefix}Service;
+import lombok.RequiredArgsConstructor;
+
 
 /**
  * ${businessName}管理 API
@@ -22,5 +24,8 @@ import ${packageName}.service.${classNamePrefix}Service;
  */
 @Tag(name = "${businessName}管理 API")
 @RestController
+@RequiredArgsConstructor
 @CrudRequestMapping(value = "/${apiModuleName}/${apiName}", api = {Api.PAGE, Api.GET, Api.CREATE, Api.UPDATE, Api.BATCH_DELETE, Api.EXPORT, Api.DICT})
-public class ${className}Controller extends BaseController<${classNamePrefix}Service, ${classNamePrefix}Resp, ${classNamePrefix}DetailResp, ${classNamePrefix}Query, ${classNamePrefix}Req> {}
+public class ${className}Controller extends BaseController<${classNamePrefix}Service, ${classNamePrefix}Resp, ${classNamePrefix}DetailResp, ${classNamePrefix}Query, ${classNamePrefix}Req> {
+		private final ${classNamePrefix}Service ${apiName}Service;
+}

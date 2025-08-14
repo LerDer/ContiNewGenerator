@@ -22,4 +22,6 @@ import ${packageName}.service.${classNamePrefix}Service;
  */
 @Service
 @RequiredArgsConstructor
-public class ${className}ServiceImpl extends BaseServiceImpl<${classNamePrefix}Mapper, ${classNamePrefix}DO, ${classNamePrefix}Resp, ${classNamePrefix}DetailResp, ${classNamePrefix}Query, ${classNamePrefix}Req> implements ${classNamePrefix}Service {}
+public class ${className}ServiceImpl extends BaseServiceImpl<${classNamePrefix}Mapper, ${classNamePrefix}DO, ${classNamePrefix}Resp, ${classNamePrefix}DetailResp, ${classNamePrefix}Query, ${classNamePrefix}Req> implements ${classNamePrefix}Service {
+	private final ${classNamePrefix}Mapper ${apiName}Mapper;
+}
