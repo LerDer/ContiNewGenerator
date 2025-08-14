@@ -14,7 +14,7 @@ import ${packageName}.model.resp.${classNamePrefix}DetailResp;
 import ${packageName}.model.resp.${classNamePrefix}Resp;
 import ${packageName}.service.${classNamePrefix}Service;
 import lombok.RequiredArgsConstructor;
-
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * ${businessName}管理 API
@@ -24,6 +24,7 @@ import lombok.RequiredArgsConstructor;
  */
 @Tag(name = "${businessName}管理 API")
 @RestController
+@Slf4j
 @RequiredArgsConstructor
 @CrudRequestMapping(value = "/${apiModuleName}/${apiName}", api = {Api.PAGE, Api.GET, Api.CREATE, Api.UPDATE, Api.BATCH_DELETE, Api.EXPORT, Api.DICT})
 public class ${className}Controller extends BaseController<${classNamePrefix}Service, ${classNamePrefix}Resp, ${classNamePrefix}DetailResp, ${classNamePrefix}Query, ${classNamePrefix}Req> {

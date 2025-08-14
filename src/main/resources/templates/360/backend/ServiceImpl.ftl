@@ -12,6 +12,7 @@ import ${packageName}.model.req.${classNamePrefix}Req;
 import ${packageName}.model.resp.${classNamePrefix}DetailResp;
 import ${packageName}.model.resp.${classNamePrefix}Resp;
 import ${packageName}.service.${classNamePrefix}Service;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * ${businessName}业务实现
@@ -19,6 +20,7 @@ import ${packageName}.service.${classNamePrefix}Service;
  * @author ${author}
  * @since ${datetime}
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ${className}ServiceImpl extends BaseServiceImpl<${classNamePrefix}Mapper, ${classNamePrefix}DO, ${classNamePrefix}Resp, ${classNamePrefix}DetailResp, ${classNamePrefix}Query, ${classNamePrefix}Req> implements ${classNamePrefix}Service {
