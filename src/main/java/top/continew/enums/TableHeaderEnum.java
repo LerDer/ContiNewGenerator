@@ -40,14 +40,14 @@ public enum TableHeaderEnum implements TableHeaderEnumMethod {
 	},
 	DESCRIPTION(5, "描述"),
 
-	TABLE_LIST(6, "列表") {
+	TABLE_LIST(6, "响应") {
 		@Override
 		public boolean isCheckbox() {
 			return true;
 		}
 
 	},
-	TABLE_FORM(7, "表单") {
+	TABLE_FORM(7, "请求") {
 		@Override
 		public boolean isCheckbox() {
 			return true;
