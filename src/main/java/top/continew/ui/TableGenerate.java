@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 import top.continew.constant.GenerateConstant;
@@ -48,8 +50,10 @@ import top.continew.icon.PluginIcons;
 import top.continew.persistent.ContiNewGeneratorPersistent;
 import top.continew.utils.CommonUtil;
 import top.continew.utils.DateUtils;
+import top.continew.utils.NotificationUtil;
 import top.continew.version.CommonTemplateEnum;
 import top.continew.version.JavaTemplateEnum;
+import top.continew.version.TemplateEnum;
 import top.continew.version.VueTemplateEnum;
 
 /**
@@ -62,6 +66,12 @@ public class TableGenerate extends DialogWrapper {
 	private JTable columnTable;
 	private JButton returnButton;
 	private JButton generateButton;
+	private JButton previewButton;
+	public static volatile String static_className = "";
+	public static List<TemplateEnum> comonEnums = Arrays.asList(CommonTemplateEnum.values());
+	public static List<TemplateEnum> vueEnums = Arrays.asList(VueTemplateEnum.values());
+	public static List<TemplateEnum> javaEnums = Arrays.asList(JavaTemplateEnum.values());
+	public static volatile List<TemplateEnum> fileList = new ArrayList<>();
 	private Map<String, Object> dictMap = new HashMap<>();
 
 	public TableGenerate(Project project, VirtualFile vf, Object selectedItem, Object moduleSelectItem) {
@@ -76,20 +86,22 @@ public class TableGenerate extends DialogWrapper {
 		returnButton.setIcon(PluginIcons.sendToTheLeft);
 		returnButton.addActionListener(e -> dispose());
 		generateButton.addActionListener(e -> generateCode(project, selectedItem, moduleSelectItem));
+		previewButton.addActionListener(e -> previewCode(project, selectedItem, moduleSelectItem));
 	}
 
-	private void generateCode(Project project, Object selectedItem, Object moduleSelectItem) {
+	private void previewCode(Project project, Object selectedItem, Object moduleSelectItem) {
+		Map<String, Object> dataModel = getDataModel(project, selectedItem, moduleSelectItem);
+		PreviewUI previewUI = new PreviewUI(project, dataModel, fileList);
+		previewUI.show();
+	}
+
+	private Map<String, Object> getDataModel(Project project, Object selectedItem, Object moduleSelectItem) {
 		ContiNewGeneratorPersistent instance = ContiNewGeneratorPersistent.getInstance(project);
-		String projectPath = instance.getProjectPath();
-		String vuePath = instance.getVuePath();
-		String configPath = instance.getConfigPath();
 		String author = instance.getAuthor();
 		String packageName = instance.getPackageName();
 		String businessName = instance.getBusinessName();
-		boolean isOverride = instance.isOverride();
 		String dbType = instance.getDbType();
 		String tablePrefix = instance.getTablePrefix();
-		String version = instance.getVersion();
 
 		String tableName;
 		String tableComment = "";
@@ -109,7 +121,7 @@ public class TableGenerate extends DialogWrapper {
 			className = CommonUtil.underlineToHump1(tableName);
 			firstSmallClassName = CommonUtil.underlineToHump(tableName);
 		}
-
+		static_className = className;
 		Map<String, Object> dataModel = new HashMap<>();
 
 		List<Object> dictCodes = new ArrayList<>();
@@ -133,8 +145,6 @@ public class TableGenerate extends DialogWrapper {
 		dataModel.put("author", author);
 		//表前缀
 		dataModel.put("tablePrefix", tablePrefix);
-		//是否覆盖
-		dataModel.put("isOverride", isOverride);
 		//创建时间
 		dataModel.put("createTime", DateUtils.format(new Date(), "yyyy-MM-dd HH:mm:ss"));
 		//修改时间
@@ -312,7 +322,76 @@ public class TableGenerate extends DialogWrapper {
 				}
 			}
 		}
+		return dataModel;
+	}
 
+	public static String previewCodeString(Map<String, Object> dataModel, TemplateEnum template) {
+		Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
+		BeansWrapper build = new BeansWrapperBuilder(Configuration.VERSION_2_3_28).build();
+		cfg.setSharedVariable("statics", build.getStaticModels());
+		// 设置模板所在目录
+		cfg.setClassForTemplateLoading(TableGenerate.class, "/templates");
+		return generateFilString(cfg, dataModel, template.getTemplatePath());
+	}
+
+	private static String generateFilString(Configuration cfg, Map<String, Object> dataModel, String templatePath) {
+		try (Writer out = new StringWriter()) {
+			Template template = cfg.getTemplate(templatePath);
+			template.process(dataModel, out);
+			// 输出结果
+			return out.toString();
+		} catch (IOException | TemplateException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	public static void generateCode(Project project, String content, TemplateEnum templateEnum, String className, String moduleName) {
+		ContiNewGeneratorPersistent instance = ContiNewGeneratorPersistent.getInstance(project);
+		String projectPath = instance.getProjectPath();
+		String vuePath = instance.getVuePath();
+		String packageName = instance.getPackageName();
+		String javaPath = projectPath + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator + packageName.replace(".", File.separator);
+		String resourcesPath = projectPath + File.separator + "src" + File.separator + "main" + File.separator + "resources";
+		String fileName = templateEnum.getFileName().formatted(className);
+		String packageName1 = templateEnum.getPackageName().formatted(className).replace(".", File.separator);
+		File file = null;
+		if (comonEnums.contains(templateEnum)) {
+			if (StringUtils.isNotBlank(packageName1)) {
+				file = new File(resourcesPath + File.separator + packageName1 + File.separator + fileName);
+			} else {
+				file = new File(resourcesPath + File.separator + fileName);
+			}
+		} else if (vueEnums.contains(templateEnum)) {
+			String packageName2 = templateEnum.getPackageName().formatted(className)
+					.replace(".", File.separator)
+					+ (StringUtils.isNotBlank(moduleName) ? File.separator + moduleName : "");
+			if (templateEnum.className2Folder()) {
+				packageName2 += File.separator + className;
+			}
+			file = new File(vuePath + File.separator + packageName2 + File.separator + fileName);
+		} else if (javaEnums.contains(templateEnum)) {
+			file = new File(javaPath + File.separator + packageName1 + File.separator + fileName);
+		} else {
+			NotificationUtil.showWarningNotification(project, "模板类型错误", "模板类型错误");
+			return;
+		}
+		try {
+			FileUtils.write(file, content, StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			NotificationUtil.showErrorNotification(project, "生成失败", "生成失败：" + e.getMessage());
+		}
+		NotificationUtil.showInfoNotification(project, "生成成功", "生成成功");
+	}
+
+	private void generateCode(Project project, Object selectedItem, Object moduleSelectItem) {
+		Map<String, Object> dataModel = getDataModel(project, selectedItem, moduleSelectItem);
+		ContiNewGeneratorPersistent instance = ContiNewGeneratorPersistent.getInstance(project);
+		String projectPath = instance.getProjectPath();
+		String vuePath = instance.getVuePath();
+		String packageName = instance.getPackageName();
+		boolean isOverride = instance.isOverride();
+		String version = instance.getVersion();
+		String className = dataModel.get("ClassName") + "";
 		// 使用与依赖相同的版本
 		Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
 		BeansWrapper build = new BeansWrapperBuilder(Configuration.VERSION_2_3_28).build();
