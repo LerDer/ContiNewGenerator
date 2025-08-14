@@ -54,7 +54,7 @@ public class ${className}Req implements Serializable {
   </#list>
 </#if>
 
-	public static ${className}DO convertToDO(${className}Req ${apiName}Req) {
+	public static ${className}DO convert(${className}Req ${apiName}Req) {
 		${className}DO ${apiName}DO = new ${className}DO();
 		<#if fieldConfigs??>
 		  <#list fieldConfigs as fieldConfig>

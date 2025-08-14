@@ -44,4 +44,19 @@ public class ${className}Resp extends BaseResp {
     </#if>
   </#list>
 </#if>
+
+	public static ${className}Resp convert(${className}DO ${apiName}DO) {
+		${className}Resp ${apiName}Resp = new ${className}Resp();
+		<#if fieldConfigs??>
+		  <#list fieldConfigs as fieldConfig>
+			<#if fieldConfig.showInList>
+		  		<#if respExcludeFields?seq_contains(fieldConfig.fieldName)>
+	  			<#continue>
+	 			</#if>
+		${apiName}Resp.set${fieldConfig.fieldName?cap_first}(${apiName}DO.get${fieldConfig.fieldName?cap_first}());
+			</#if>
+		  </#list>
+		</#if>
+		return ${apiName}Resp;
+	}
 }
