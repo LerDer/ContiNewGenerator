@@ -163,8 +163,6 @@ public class TableGenerate extends DialogWrapper {
 		dataModel.put("className", className);
 		//类名前缀
 		dataModel.put("classNamePrefix", className);
-		//子包名称
-		dataModel.put("subPackageName", GenerateConstant.doPackageName);
 
 		dataModel.put("hasBigDecimalField", false);
 		dataModel.put("hasTimeField", false);
