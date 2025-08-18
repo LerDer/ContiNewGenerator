@@ -1,10 +1,12 @@
 package top.continew.config;
 
-import com.intellij.openapi.application.*;
-import com.intellij.openapi.components.*;
-import com.intellij.util.xmlb.*;
-import lombok.*;
-import org.jetbrains.annotations.*;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.components.PersistentStateComponent;
+import com.intellij.openapi.components.State;
+import com.intellij.openapi.components.Storage;
+import com.intellij.util.xmlb.XmlSerializerUtil;
+import lombok.Data;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * @author Administrator
@@ -14,7 +16,7 @@ import org.jetbrains.annotations.*;
 @State(name = "ContiNewConfigPersistent", storages = {@Storage("ContiNewConfigPersistent.xml")})
 public class ContiNewConfigPersistent implements PersistentStateComponent<ContiNewConfigPersistent> {
 
-	private Boolean hightLight;
+	private Boolean highLight;
 	private String requestExcludeText;
 	private String responseExcludeText;
 	private String requiredExcludeText;
@@ -29,8 +31,8 @@ public class ContiNewConfigPersistent implements PersistentStateComponent<ContiN
 		if (config == null) {
 			config = new ContiNewConfigPersistent();
 		}
-		if (config.getHightLight() == null) {
-			config.setHightLight(true);
+		if (config.getHighLight() == null) {
+			config.setHighLight(true);
 		}
 		if (config.getRequestExcludeText() == null) {
 			config.setRequestExcludeText("createUser,createTime,updateUser,updateTime,deleteUser,deleteTime,delFlag,isDeleted,deletedBy");

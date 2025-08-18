@@ -1,8 +1,13 @@
 package top.continew.config;
 
-import java.util.*;
-import javax.swing.*;
-import top.continew.constant.*;
+import java.util.Objects;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import top.continew.constant.GenerateConstant;
 
 /**
  * @author Administrator
@@ -31,7 +36,7 @@ public class ContiNewGeneratorConfigUI {
 	}
 
 	public void apply() {
-		contiNewConfigPersistent.setHightLight(highlightCheckBox.isSelected());
+		contiNewConfigPersistent.setHighLight(highlightCheckBox.isSelected());
 		contiNewConfigPersistent.setRequestExcludeText(requestExcludeTextField.getText());
 		contiNewConfigPersistent.setResponseExcludeText(responseExcludeTextField.getText());
 		contiNewConfigPersistent.setRequiredExcludeText(requiredExcludeTextField.getText());
@@ -43,7 +48,7 @@ public class ContiNewGeneratorConfigUI {
 	}
 
 	public void reset() {
-		highlightCheckBox.setSelected(contiNewConfigPersistent.getHightLight());
+		highlightCheckBox.setSelected(contiNewConfigPersistent.getHighLight());
 		requestExcludeTextField.setText(contiNewConfigPersistent.getRequestExcludeText());
 		responseExcludeTextField.setText(contiNewConfigPersistent.getResponseExcludeText());
 		requiredExcludeTextField.setText(contiNewConfigPersistent.getRequiredExcludeText());
@@ -55,15 +60,15 @@ public class ContiNewGeneratorConfigUI {
 	}
 
 	public boolean isModified() {
-		return contiNewConfigPersistent.getHightLight() != highlightCheckBox.isSelected() ||
+		return contiNewConfigPersistent.getHighLight() != highlightCheckBox.isSelected() ||
 				!Objects.equals(contiNewConfigPersistent.getRequestExcludeText(), requestExcludeTextField.getText()) ||
 				!Objects.equals(contiNewConfigPersistent.getResponseExcludeText(), responseExcludeTextField.getText()) ||
 				!Objects.equals(contiNewConfigPersistent.getRequiredExcludeText(), requiredExcludeTextField.getText()) ||
 				!Objects.equals(contiNewConfigPersistent.getQueryExcludeText(), queryExcludeTextField.getText()) ||
-				!Objects.equals(contiNewConfigPersistent.getStringType(), (String) stringTypeComboBox.getSelectedItem()) ||
-				!Objects.equals(contiNewConfigPersistent.getNumberType(), (String) numberTypeComboBox.getSelectedItem()) ||
-				!Objects.equals(contiNewConfigPersistent.getDateType(), (String) dateTypeComboBox.getSelectedItem()) ||
-				!Objects.equals(contiNewConfigPersistent.getBooleanType(), (String) booleanTypeComboBox.getSelectedItem());
+				!Objects.equals(contiNewConfigPersistent.getStringType(), stringTypeComboBox.getSelectedItem()) ||
+				!Objects.equals(contiNewConfigPersistent.getNumberType(), numberTypeComboBox.getSelectedItem()) ||
+				!Objects.equals(contiNewConfigPersistent.getDateType(), dateTypeComboBox.getSelectedItem()) ||
+				!Objects.equals(contiNewConfigPersistent.getBooleanType(), booleanTypeComboBox.getSelectedItem());
 
 	}
 }
