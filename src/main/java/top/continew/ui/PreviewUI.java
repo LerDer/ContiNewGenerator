@@ -63,7 +63,8 @@ public class PreviewUI extends DialogWrapper {
 		cancelButton.addActionListener(e -> dispose());
 		fileList.addListSelectionListener(e -> {
 			if (!e.getValueIsAdjusting()) {
-				boolean hightLight1 = configPersistent.getHighLight() != null && configPersistent.getHighLight();
+				ContiNewConfigPersistent configPersistent1 = ContiNewConfigPersistent.getInstance();
+				boolean hightLight1 = configPersistent1.getHighLight() != null && configPersistent1.getHighLight();
 				TemplateEnum selectedValue = fileList.getSelectedValue();
 				String previewCodeString1 = TableGenerate.previewCodeString(dataModel, selectedValue);
 				textPanel.removeAll();
