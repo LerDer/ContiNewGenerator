@@ -39,9 +39,6 @@ public class ${className}Resp extends BaseResp {
           <#continue>
      </#if>
 
-    /**
-     * ${fieldConfig.comment}
-     */
     @Schema(description = "${fieldConfig.comment}")
     private ${fieldConfig.fieldType} ${fieldConfig.fieldName};
     </#if>

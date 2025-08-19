@@ -36,9 +36,6 @@ public class ${className}Query implements Serializable {
   <#list fieldConfigs as fieldConfig>
     <#if fieldConfig.showInQuery>
 
-    /**
-     * ${fieldConfig.comment}
-     */
     @Schema(description = "${fieldConfig.comment}")
     @Query(type = QueryType.${fieldConfig.queryType})
     <#if fieldConfig.queryType = 'IN' || fieldConfig.queryType = 'NOT_IN' || fieldConfig.queryType = 'BETWEEN'>

@@ -35,9 +35,6 @@ public class ${className}Req implements Serializable {
   <#list fieldConfigs as fieldConfig>
     <#if fieldConfig.showInForm>
 
-    /**
-     * ${fieldConfig.comment}
-     */
     @Schema(description = "${fieldConfig.comment}")
     <#if fieldConfig.isRequired>
     <#if fieldConfig.fieldType = 'String'>
