@@ -9,14 +9,18 @@ package ${packageName}.service;
 </#list>
 <#if mpService>
 import ${packageName}.model.entity.${classNamePrefix}DO;
-import top.continew.starter.data.mp.service.IService;
+//import top.continew.starter.data.mp.service.IService;
+import com.baomidou.mybatisplus.extension.service.IService;
 <#else>
 import top.continew.starter.extension.crud.service.BaseService;
 import ${packageName}.model.resp.${classNamePrefix}DetailResp;
 </#if>
+import top.continew.starter.extension.crud.model.resp.PageResp;
+import top.continew.starter.extension.crud.model.query.PageQuery;
 import ${packageName}.model.query.${classNamePrefix}Query;
 import ${packageName}.model.req.${classNamePrefix}Req;
 import ${packageName}.model.resp.${classNamePrefix}Resp;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * ${businessName}业务接口
@@ -32,7 +36,7 @@ public interface ${className}Service extends <#if mpService>IService<${className
      * @param ${apiName}Req
      * @return ${classNamePrefix}Resp
      */
-    ${classNamePrefix}Resp create${className}(${classNamePrefix}Req ${apiName}Req);
+    ${primaryType} create${className}(${classNamePrefix}Req ${apiName}Req);
 
     /**
      * 删除 ${businessName}
@@ -62,15 +66,16 @@ public interface ${className}Service extends <#if mpService>IService<${className
      * 分页查询 ${businessName}
      *
      * @param ${apiName}Query
+     * @param pageQuery
      * @return PageResp<${classNamePrefix}Resp>
      */
-    PageResp<${classNamePrefix}Resp> page${className}(${classNamePrefix}Query ${apiName}Query);
+    PageResp<${classNamePrefix}Resp> page${className}(${classNamePrefix}Query ${apiName}Query, PageQuery pageQuery);
 
      /**
      * 导出 ${businessName}
      *
      * @param ${apiName}Query
      */
-    void export${className}(${classNamePrefix}Query ${apiName}Query);
+    void export${className}(${classNamePrefix}Query ${apiName}Query, HttpServletResponse response);
 </#if>
 }
