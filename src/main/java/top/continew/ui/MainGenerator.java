@@ -57,6 +57,9 @@ public class MainGenerator extends DialogWrapper {
 	private JButton selectPackageButton;
 	private JLabel vuePathLabel;
 	private AutoCompleteComboBox versionComboBox;
+	private JCheckBox controllerNoApiCheckBox;
+	private JCheckBox serviceMPCheckBox;
+	private JCheckBox noBaseClassCheckBox;
 
 	public MainGenerator(Project project) {
 		super(project);
@@ -128,6 +131,9 @@ public class MainGenerator extends DialogWrapper {
 		//回显数据
 		String projectPath = instance.getProjectPath();
 		this.overrideCheckBox.setSelected(instance.isOverride());
+		this.noBaseClassCheckBox.setSelected(instance.isNoBaseClass());
+		this.controllerNoApiCheckBox.setSelected(instance.isControllerNoApi());
+		this.serviceMPCheckBox.setSelected(instance.isServiceMP());
 		this.versionComboBox.setSelectedItem(instance.getVersion());
 		if (StringUtils.isNotEmpty(projectPath)) {
 			this.projectPathTextField.setText(projectPath);
@@ -166,6 +172,9 @@ public class MainGenerator extends DialogWrapper {
 		instance.setPackageName(packageNameTextField.getText());
 		instance.setBusinessName(businessNameTextField.getText());
 		instance.setOverride(overrideCheckBox.isSelected());
+		instance.setNoBaseClass(noBaseClassCheckBox.isSelected());
+		instance.setControllerNoApi(controllerNoApiCheckBox.isSelected());
+		instance.setServiceMP(serviceMPCheckBox.isSelected());
 		instance.setVersion(versionComboBox.getSelectedItem().toString());
 		instance.setTablePrefix(tablePrefixTextField.getText());
 		TableGenerate tableGenerate = new TableGenerate(project, LocalFileSystem.getInstance().findFileByIoFile(new File(this.configFilePathTextField.getText())),

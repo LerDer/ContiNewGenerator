@@ -1,29 +1,62 @@
 package top.continew.ui;
 
-import com.intellij.openapi.project.*;
-import com.intellij.openapi.ui.*;
-import com.intellij.openapi.vfs.*;
-import freemarker.ext.beans.*;
-import freemarker.template.*;
-import java.io.*;
-import java.nio.charset.*;
-import java.util.*;
-import java.util.stream.*;
-import javax.swing.*;
-import javax.swing.table.*;
-import org.apache.commons.io.*;
-import org.apache.commons.lang3.*;
-import org.jetbrains.annotations.*;
-import top.continew.config.*;
-import top.continew.constant.*;
-import top.continew.entity.*;
-import top.continew.enums.*;
-import top.continew.format.*;
-import top.continew.handler.*;
-import top.continew.icon.*;
-import top.continew.persistent.*;
-import top.continew.utils.*;
-import top.continew.version.*;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.ComboBox;
+import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.vfs.VirtualFile;
+import freemarker.ext.beans.BeansWrapper;
+import freemarker.ext.beans.BeansWrapperBuilder;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import javax.swing.Action;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.jetbrains.annotations.NotNull;
+import top.continew.config.ContiNewConfigPersistent;
+import top.continew.constant.GenerateConstant;
+import top.continew.entity.SqlColumn;
+import top.continew.entity.SysDict;
+import top.continew.enums.FormTypeEnum;
+import top.continew.enums.QueryTypeEnum;
+import top.continew.enums.TableHeaderEnum;
+import top.continew.format.IdeaCodeFormatter;
+import top.continew.handler.DBTypeEnum;
+import top.continew.icon.PluginIcons;
+import top.continew.persistent.ContiNewGeneratorPersistent;
+import top.continew.utils.CommonUtil;
+import top.continew.utils.DateUtils;
+import top.continew.utils.NotificationUtil;
+import top.continew.version.CommonTemplateEnum;
+import top.continew.version.JavaTemplateEnum;
+import top.continew.version.TemplateEnum;
+import top.continew.version.VueTemplateEnum;
 
 /**
  * @author lww
@@ -76,6 +109,11 @@ public class TableGenerate extends DialogWrapper {
 		String tablePrefix = instance.getTablePrefix();
 		String version = instance.getVersion();
 
+		boolean override = instance.isOverride();
+		boolean noBaseClass = instance.isNoBaseClass();
+		boolean serviceMP = instance.isServiceMP();
+		boolean controllerNoApi = instance.isControllerNoApi();
+
 		String tableName;
 		String tableComment = "";
 		String className = "";
@@ -98,6 +136,10 @@ public class TableGenerate extends DialogWrapper {
 		Map<String, Object> dataModel = new HashMap<>();
 
 		List<Object> dictCodes = new ArrayList<>();
+		dataModel.put("noBase", noBaseClass);
+		dataModel.put("NoApi", controllerNoApi);
+		dataModel.put("mpService", serviceMP);
+
 		dataModel.put("dbType", dbType);
 		dataModel.put("dictCodes", dictCodes);
 		//表名称
