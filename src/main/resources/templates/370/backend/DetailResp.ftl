@@ -7,13 +7,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 
+<#if noBase>
+import java.io.Serializable;
+<#else>
 import top.continew.admin.common.model.resp.BaseDetailResp;
+</#if>
 <#if imports??>
     <#list imports as className>
 import ${className};
     </#list>
 </#if>
-import java.io.Serializable;
 import java.io.Serial;
 <#if hasTimeField>
 import java.time.*;

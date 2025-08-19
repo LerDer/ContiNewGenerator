@@ -4,8 +4,11 @@ import lombok.Data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import top.continew.admin.common.base.model.resp.BaseResp;
+<#if noBase>
 import java.io.Serializable;
+<#else>
+import top.continew.admin.common.base.model.resp.BaseResp;
+</#if>
 <#if imports??>
     <#list imports as className>
 import ${className};

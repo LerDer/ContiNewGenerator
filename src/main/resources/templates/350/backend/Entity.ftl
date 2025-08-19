@@ -3,8 +3,11 @@ package ${packageName}.model.entity;
 import lombok.Data;
 
 import com.baomidou.mybatisplus.annotation.TableName;
+<#if noBase>
 import java.io.Serializable;
+<#else>
 import top.continew.admin.common.model.entity.BaseDO;
+</#if>
 
 import java.io.Serial;
 <#if hasTimeField>

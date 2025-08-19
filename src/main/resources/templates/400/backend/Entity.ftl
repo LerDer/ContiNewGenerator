@@ -4,8 +4,11 @@ import lombok.Data;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 
-import top.continew.admin.common.base.model.entity.BaseDO;
+<#if noBase>
 import java.io.Serializable;
+<#else>
+import top.continew.admin.common.base.model.entity.BaseDO;
+</#if>
 <#if imports??>
     <#list imports as className>
 import ${className};

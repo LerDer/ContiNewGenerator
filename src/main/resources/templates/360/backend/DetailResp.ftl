@@ -7,8 +7,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 
-import top.continew.admin.common.model.resp.BaseDetailResp;
+<#if noBase>
 import java.io.Serializable;
+<#else>
+import top.continew.admin.common.model.resp.BaseDetailResp;
+</#if>
 import java.io.Serial;
 <#if hasTimeField>
 import java.time.*;
