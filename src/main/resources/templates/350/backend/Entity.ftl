@@ -22,7 +22,6 @@ import java.math.BigDecimal;
  */
 @Data
 @TableName("${tableName}")
-@Schema(description = "${businessName}信息")
 public class ${className}DO extends BaseDO {
 
     @Serial
@@ -33,7 +32,9 @@ public class ${className}DO extends BaseDO {
     <#continue>
 	</#if>
 
-    @Schema(description = "${fieldConfig.comment}")
+    /**
+     * ${fieldConfig.comment!""}
+     */
     private ${fieldConfig.fieldType} ${fieldConfig.fieldName};
   </#list>
 </#if>
