@@ -35,7 +35,7 @@ public interface ${className}Service extends <#if mpService>IService<${className
     /**
      * 创建 ${businessName}
      *
-     * @param ${apiName}Req
+     * @param ${apiName}Req 创建请求参数
      * @return ${classNamePrefix}Resp
      */
     ${primaryType} create${className}(${classNamePrefix}Req ${apiName}Req);
@@ -43,7 +43,7 @@ public interface ${className}Service extends <#if mpService>IService<${className
     /**
      * 删除 ${businessName}
      *
-     * @param ${primaryKey}
+     * @param ${primaryKey} 主键
      * @return Boolean
      */
     Boolean delete${className}(${primaryType} ${primaryKey});
@@ -51,7 +51,7 @@ public interface ${className}Service extends <#if mpService>IService<${className
     /**
      * 批量删除 ${businessName}
      *
-     * @param ids
+     * @param ids 主键列表
      * @return Boolean
      */
     Boolean delete${className}s(List<Long> ids);
@@ -59,8 +59,8 @@ public interface ${className}Service extends <#if mpService>IService<${className
     /**
      * 更新 ${businessName}
      *
-     * @param ${primaryKey}
-     * @param ${apiName}Req
+     * @param ${primaryKey} 主键
+     * @param ${apiName}Req 更新请求参数
      * @return ${classNamePrefix}Resp
      */
     ${classNamePrefix}Resp update${className}(${primaryType} ${primaryKey}, ${classNamePrefix}Req ${apiName}Req);
@@ -68,7 +68,7 @@ public interface ${className}Service extends <#if mpService>IService<${className
     /**
      * 查询 ${businessName}
      *
-     * @param ${primaryKey}
+     * @param ${primaryKey} 主键
      * @return ${classNamePrefix}Resp
      */
     ${classNamePrefix}Resp get${className}(${primaryType} ${primaryKey});
@@ -76,7 +76,7 @@ public interface ${className}Service extends <#if mpService>IService<${className
     /**
      * 查询列表 ${businessName}
      *
-     * @param ${apiName}Query
+     * @param ${apiName}Query 查询请求参数
      * @return List<${classNamePrefix}Resp>
      */
 	List<${classNamePrefix}Resp> list${className}(${classNamePrefix}Query ${apiName}Query);
@@ -84,8 +84,8 @@ public interface ${className}Service extends <#if mpService>IService<${className
     /**
      * 分页查询 ${businessName}
      *
-     * @param ${apiName}Query
-     * @param pageQuery
+     * @param ${apiName}Query 查询请求参数
+     * @param pageQuery 分页请求参数
      * @return PageResp<${classNamePrefix}Resp>
      */
     PageResp<${classNamePrefix}Resp> page${className}(${classNamePrefix}Query ${apiName}Query, PageQuery pageQuery);
@@ -93,7 +93,7 @@ public interface ${className}Service extends <#if mpService>IService<${className
      /**
      * 导出 ${businessName}
      *
-     * @param ${apiName}Query
+     * @param ${apiName}Query 查询请求参数
      */
     void export${className}(${classNamePrefix}Query ${apiName}Query, HttpServletResponse response);
 </#if>
