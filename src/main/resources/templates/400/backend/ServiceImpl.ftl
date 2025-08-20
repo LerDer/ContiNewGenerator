@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 <#if mpService>
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import top.continew.starter.data.util.QueryWrapperHelper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 //import top.continew.starter.data.mp.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
