@@ -12,7 +12,11 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 <#if mpService>
+import java.util.List;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import org.springframework.transaction.annotation.Transactional;
+import org.apache.commons.lang3.StringUtils;
 import top.continew.starter.data.util.QueryWrapperHelper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 //import top.continew.starter.data.mp.service.impl.ServiceImpl;
@@ -50,7 +54,22 @@ public class ${className}ServiceImpl extends <#if mpService>ServiceImpl<${classN
 
 <#if mpService>
     @Override
+	@Transactional(rollbackFor = Exception.class)
     public ${primaryType} create${className}(${classNamePrefix}Req ${apiName}Req){
+    	<#list fieldConfigs as field>
+    	<#if field.isPrimary?? && field.isPrimary>
+    		<#if field.fieldType == "String">
+		if (StringUtils.isNotBlank(${apiName}Req.get${field.fieldName?cap_first}())) {
+    		<#else>
+		if (${apiName}Req.get${field.fieldName?cap_first}() != null) {
+    		</#if>
+		Long count = ${apiName}Mapper.selectCount(new LambdaQueryWrapper<${className}DO>()
+				.eq(${className}::get${field.fieldName?cap_first}, ${apiName}Req.get${field.fieldName?cap_first}()));
+		if (count > 0) {
+			throw new BusinessException("新增${businessName}失败，${field.comment}已存在：" + ${apiName}Req.get${field.fieldName?cap_first}());
+		}
+    	</#if>
+    	</#list>
         ${className}DO convert = ${classNamePrefix}Req.convert(${apiName}Req);
         int insert = ${apiName}Mapper.insert(convert);
         if (insert == 0) {
@@ -60,7 +79,12 @@ public class ${className}ServiceImpl extends <#if mpService>ServiceImpl<${classN
     }
 
     @Override
+	@Transactional(rollbackFor = Exception.class)
     public Boolean delete${className}(${primaryType} ${primaryKey}){
+    	${className}DO ${apiName}DO = ${apiName}Mapper.selectById(${primaryKey});
+        if (${apiName}DO == null) {
+            throw new BusinessException(${primaryKey} + " ${businessName}不存在");
+        }
         int delete = ${apiName}Mapper.deleteById(${primaryKey});
         if (delete == 0) {
             throw new BusinessException("删除${businessName}失败");
@@ -69,11 +93,31 @@ public class ${className}ServiceImpl extends <#if mpService>ServiceImpl<${classN
     }
 
     @Override
+	@Transactional(rollbackFor = Exception.class)
     public ${classNamePrefix}Resp update${className}(${classNamePrefix}Req ${apiName}Req){
         ${primaryType} ${primaryKey} = ${apiName}Req.get${primaryKey?cap_first}();
         if (${primaryKey} == null) {
             throw new BusinessException("${businessName}${primaryKey}不能为空");
         }
+        ${className}DO ${apiName}DO = ${apiName}Mapper.selectById(${primaryKey});
+        if (${apiName}DO == null) {
+            throw new BusinessException(${primaryKey} + " ${businessName}不存在");
+        }
+        <#list fieldConfigs as field>
+    	<#if field.isPrimary?? && field.isPrimary>
+    		<#if field.fieldType == "String">
+		if (StringUtils.isNotBlank(${apiName}Req.get${field.fieldName?cap_first}())) {
+    		<#else>
+		if (${apiName}Req.get${field.fieldName?cap_first}() != null) {
+    		</#if>
+		Long count = ${apiName}Mapper.selectCount(new LambdaQueryWrapper<${className}DO>()
+				.eq(${className}::get${field.fieldName?cap_first}, ${apiName}Req.get${field.fieldName?cap_first}())
+				.ne(${className}::get${primaryKey?cap_first},${apiName}Req.get${primaryKey?cap_first}()));
+		if (count > 0) {
+			throw new BusinessException("更新${businessName}失败，${field.comment}存在冲突：" + ${apiName}Req.get${field.fieldName?cap_first}());
+		}
+    	</#if>
+    	</#list>
         ${className}DO convert = ${classNamePrefix}Req.convert(${apiName}Req);
         int update = ${apiName}Mapper.updateById(convert);
         if (update == 0) {
@@ -90,6 +134,13 @@ public class ${className}ServiceImpl extends <#if mpService>ServiceImpl<${classN
         }
         return ${classNamePrefix}Resp.convert(${apiName}DO);
     }
+
+	@Override
+	public List<${classNamePrefix}Resp> list${className}(${classNamePrefix}Query ${apiName}Query){
+		QueryWrapper<${className}DO> build = QueryWrapperHelper.build(${apiName}Query);
+		List<${className}DO> ${apiName}DOList = ${apiName}Mapper.selectList(build);
+		return ${apiName}DOList.stream().map(${classNamePrefix}Resp::convert).toList();
+	}
 
     @Override
     public PageResp<${classNamePrefix}Resp> page${className}(${classNamePrefix}Query ${apiName}Query, PageQuery pageQuery){

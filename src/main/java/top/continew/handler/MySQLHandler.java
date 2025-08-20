@@ -12,6 +12,7 @@ import top.continew.constant.GenerateConstant;
 import top.continew.entity.SqlColumn;
 import top.continew.entity.SqlTable;
 import top.continew.entity.SysDict;
+import top.continew.entity.TableIndex;
 import top.continew.utils.DataSourceUtils;
 import top.continew.utils.DataSourceUtils.ListHandler;
 import top.continew.utils.NotificationUtil;
@@ -56,6 +57,14 @@ public class MySQLHandler implements QueryHandler {
 		String sql = "select `name`,`code` from sys_dict";
 		ListHandler<SysDict> handler = new ListHandler<>(SysDict.class);
 		return DataSourceUtils.executeQuery(sql, handler);
+	}
+
+	@Override
+	public List<TableIndex> getSqlTablesIndex(Project project, VirtualFile vf, String tableName) {
+		initDataSource(project, vf);
+		String sql = "SELECT * FROM INFORMATION_SCHEMA.STATISTICS WHERE TABLE_SCHEMA = ? AND table_name = ?";
+		ListHandler<TableIndex> handler = new ListHandler<>(TableIndex.class);
+		return DataSourceUtils.executeQuery(sql, handler, DataSourceUtils.getDbName(), tableName);
 	}
 
 	public static void initDataSource(Project project, VirtualFile vf) {

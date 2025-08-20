@@ -109,6 +109,12 @@ public enum TableHeaderEnum implements TableHeaderEnumMethod {
 			return false;
 		}
 	},
+	UNIQUE(16, "唯一") {
+		@Override
+		public boolean isVisible() {
+			return false;
+		}
+	},
 	//
 	;
 

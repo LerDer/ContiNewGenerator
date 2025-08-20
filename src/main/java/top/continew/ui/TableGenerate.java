@@ -43,6 +43,7 @@ import top.continew.config.ContiNewConfigPersistent;
 import top.continew.constant.GenerateConstant;
 import top.continew.entity.SqlColumn;
 import top.continew.entity.SysDict;
+import top.continew.entity.TableIndex;
 import top.continew.enums.FormTypeEnum;
 import top.continew.enums.QueryTypeEnum;
 import top.continew.enums.TableHeaderEnum;
@@ -332,6 +333,16 @@ public class TableGenerate extends DialogWrapper {
 					} else {
 						fieldConfig.put("isNotNull", Boolean.TRUE);
 					}
+					continue;
+				}
+				if (columnName.equals(TableHeaderEnum.UNIQUE.getDescription())) {
+					Object valueAt = columnTable.getValueAt(i, j);
+					if (Boolean.TRUE.equals(valueAt)) {
+						fieldConfig.put("isUnique", Boolean.TRUE);
+					} else {
+						fieldConfig.put("isUnique", Boolean.FALSE);
+					}
+					continue;
 				}
 			}
 		}
@@ -527,7 +538,13 @@ public class TableGenerate extends DialogWrapper {
 				tableName = selectedItem.toString();
 			}
 			List<SqlColumn> columns = dbTypeEnum.getHandler().getSqlTablesColumns(project, vf, tableName);
+			List<TableIndex> sqlTablesIndex = dbTypeEnum.getHandler().getSqlTablesIndex(project, vf, tableName);
 			List<SysDict> dictNames = dbTypeEnum.getHandler().getDictNames(project, vf);
+
+			List<String> uniqueIndexList = sqlTablesIndex
+					.stream()
+					.map(TableIndex::getColumnName)
+					.toList();
 			dictMap = dictNames.stream().collect(Collectors.toMap(SysDict::getName, SysDict::getCode));
 			data = new Object[columns.size()][];
 			for (int i = 0; i < columns.size(); i++) {
@@ -614,6 +631,11 @@ public class TableGenerate extends DialogWrapper {
 				column[13] = sqlColumn.getCharacterMaximumLength();
 				column[14] = sqlColumn.isPrimaryKey();
 				column[15] = sqlColumn.isNULLAble();
+				if (uniqueIndexList.contains(sqlColumn.getColumnName()) && !sqlColumn.isPrimaryKey()) {
+					column[16] = Boolean.TRUE;
+				} else {
+					column[16] = Boolean.FALSE;
+				}
 			}
 
 			// 创建表格模型
@@ -637,10 +659,7 @@ public class TableGenerate extends DialogWrapper {
 							.filter(TableHeaderEnum::isEditable)
 							.map(TableHeaderEnum::getIndex)
 							.toList();
-					if (collect.contains(column)) {
-						return true;
-					}
-					return false;
+					return collect.contains(column);
 				}
 
 			};

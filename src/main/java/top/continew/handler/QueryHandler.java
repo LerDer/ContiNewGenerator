@@ -6,6 +6,7 @@ import java.util.List;
 import top.continew.entity.SqlColumn;
 import top.continew.entity.SqlTable;
 import top.continew.entity.SysDict;
+import top.continew.entity.TableIndex;
 
 /**
  * @author lww
@@ -18,5 +19,7 @@ public interface QueryHandler {
 	List<SqlColumn> getSqlTablesColumns(Project project, VirtualFile vf, String tableName);
 
 	List<SysDict> getDictNames(Project project, VirtualFile vf);
+
+	List<TableIndex> getSqlTablesIndex(Project project, VirtualFile vf, String tableName);
 
 }

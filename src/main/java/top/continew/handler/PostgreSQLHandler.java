@@ -12,6 +12,7 @@ import top.continew.constant.GenerateConstant;
 import top.continew.entity.SqlColumn;
 import top.continew.entity.SqlTable;
 import top.continew.entity.SysDict;
+import top.continew.entity.TableIndex;
 import top.continew.utils.DataSourceUtils;
 import top.continew.utils.DataSourceUtils.ListHandler;
 import top.continew.utils.NotificationUtil;
@@ -57,6 +58,40 @@ public class PostgreSQLHandler implements QueryHandler {
 		String sql = "select name,code from sys_dict";
 		ListHandler<SysDict> handler = new ListHandler<>(SysDict.class);
 		return DataSourceUtils.executeQuery(sql, handler);
+	}
+
+	@Override
+	public List<TableIndex> getSqlTablesIndex(Project project, VirtualFile vf, String tableName) {
+		String sql = """
+				SELECT
+				    idxs.tablename as tableName,
+				    i.relname AS indexName,
+				    a.attname AS columnName,
+				    am.amname AS indexType,
+				    case idx.indisunique when  'true' then 0 else 1 end AS nonUnique,
+				    case idx.indisprimary when  'true' then 1 else 0 end AS isPrimary
+				FROM
+				    pg_class t,
+				    pg_class i,
+				    pg_index idx,
+				    pg_attribute a,
+				    pg_am am,
+				    pg_indexes idxs
+				WHERE
+				    t.oid = idx.indrelid
+				  AND i.oid = idx.indexrelid
+				  AND a.attrelid = t.oid
+				  AND a.attnum = ANY(idx.indkey)
+				  AND t.relkind = 'r'
+				  AND i.relam = am.oid
+				  AND i.relname = idxs.indexname
+				  AND t.relname = ?
+				ORDER BY
+				    i.relname,
+				    a.attnum;
+				""";
+		ListHandler<TableIndex> handler = new ListHandler<>(TableIndex.class);
+		return DataSourceUtils.executeQuery(sql, handler, tableName);
 	}
 
 	public static void initDataSource(Project project, VirtualFile vf) {

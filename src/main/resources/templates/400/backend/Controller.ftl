@@ -9,6 +9,7 @@ package ${packageName}.controller;
 </#list>
 
 <#if NoApi>
+import java.util.List;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -89,6 +90,13 @@ public class ${className}Controller<#if !NoApi> extends BaseController<${classNa
 	@GetMapping("/detail")
 	public ${classNamePrefix}Resp get${className}(${primaryType} ${primaryKey}) {
 		return ${apiName}Service.get${className}(${primaryKey});
+	}
+
+	@Operation(summary = "查询${businessName}列表")
+	@SaCheckPermission(value = "${apiModuleName}:${apiName}:query")
+	@PostMapping("/list")
+	public List<${classNamePrefix}Resp> list${className}(@ParameterObject ${classNamePrefix}Query ${apiName}Query) {
+		return ${apiName}Service.list${className}(${apiName}Query);
 	}
 
 	@Operation(summary = "分页查询${businessName}列表")

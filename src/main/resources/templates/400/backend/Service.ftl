@@ -9,6 +9,7 @@ package ${packageName}.service;
 </#list>
 
 <#if mpService>
+import java.util.List;
 import ${packageName}.model.entity.${classNamePrefix}DO;
 //import top.continew.starter.data.mp.service.IService;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -62,6 +63,14 @@ public interface ${className}Service extends <#if mpService>IService<${className
      * @return ${classNamePrefix}Resp
      */
     ${classNamePrefix}Resp get${className}(${primaryType} ${primaryKey});
+
+    /**
+     * 查询列表 ${businessName}
+     *
+     * @param ${apiName}Query
+     * @return List<${classNamePrefix}Resp>
+     */
+	List<${classNamePrefix}Resp> list${className}(${classNamePrefix}Query ${apiName}Query);
 
     /**
      * 分页查询 ${businessName}
