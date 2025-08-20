@@ -543,6 +543,7 @@ public class TableGenerate extends DialogWrapper {
 
 			List<String> uniqueIndexList = sqlTablesIndex
 					.stream()
+					.filter(e -> e.getNonUnique() == 0)
 					.map(TableIndex::getColumnName)
 					.toList();
 			dictMap = dictNames.stream().collect(Collectors.toMap(SysDict::getName, SysDict::getCode));

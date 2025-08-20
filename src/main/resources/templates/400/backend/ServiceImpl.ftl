@@ -21,6 +21,7 @@ import top.continew.starter.data.util.QueryWrapperHelper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 //import top.continew.starter.data.mp.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import top.continew.starter.extension.crud.model.req.IdsReq;
 <#else>
 import top.continew.admin.common.base.service.BaseServiceImpl;
 </#if>
@@ -57,7 +58,7 @@ public class ${className}ServiceImpl extends <#if mpService>ServiceImpl<${classN
 	@Transactional(rollbackFor = Exception.class)
     public ${primaryType} create${className}(${classNamePrefix}Req ${apiName}Req){
     	<#list fieldConfigs as field>
-    	<#if field.isPrimary?? && field.isPrimary>
+    	<#if field.isUnique?? && field.isUnique>
     		<#if field.fieldType == "String">
 		if (StringUtils.isNotBlank(${apiName}Req.get${field.fieldName?cap_first}())) {
     		<#else>
@@ -94,9 +95,15 @@ public class ${className}ServiceImpl extends <#if mpService>ServiceImpl<${classN
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean delete${className}s(List<Long> ids){
+    	int delete = ${apiName}Mapper.deleteByIds(ids);
+        return delete == ids.size();
+    }
+
+    @Override
 	@Transactional(rollbackFor = Exception.class)
-    public ${classNamePrefix}Resp update${className}(${classNamePrefix}Req ${apiName}Req){
-        ${primaryType} ${primaryKey} = ${apiName}Req.get${primaryKey?cap_first}();
+    public ${classNamePrefix}Resp update${className}(${primaryType} ${primaryKey}, ${classNamePrefix}Req ${apiName}Req){
         if (${primaryKey} == null) {
             throw new BusinessException("${businessName}${primaryKey}不能为空");
         }
@@ -105,7 +112,7 @@ public class ${className}ServiceImpl extends <#if mpService>ServiceImpl<${classN
             throw new BusinessException(${primaryKey} + " ${businessName}不存在");
         }
         <#list fieldConfigs as field>
-    	<#if field.isPrimary?? && field.isPrimary>
+    	<#if field.isUnique?? && field.isUnique>
     		<#if field.fieldType == "String">
 		if (StringUtils.isNotBlank(${apiName}Req.get${field.fieldName?cap_first}())) {
     		<#else>

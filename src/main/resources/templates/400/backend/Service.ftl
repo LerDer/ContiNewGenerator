@@ -49,12 +49,21 @@ public interface ${className}Service extends <#if mpService>IService<${className
     Boolean delete${className}(${primaryType} ${primaryKey});
 
     /**
+     * 批量删除 ${businessName}
+     *
+     * @param ids
+     * @return Boolean
+     */
+    Boolean delete${className}s(List<Long> ids);
+
+    /**
      * 更新 ${businessName}
      *
+     * @param ${primaryKey}
      * @param ${apiName}Req
      * @return ${classNamePrefix}Resp
      */
-    ${classNamePrefix}Resp update${className}(${classNamePrefix}Req ${apiName}Req);
+    ${classNamePrefix}Resp update${className}(${primaryType} ${primaryKey}, ${classNamePrefix}Req ${apiName}Req);
 
     /**
      * 查询 ${businessName}

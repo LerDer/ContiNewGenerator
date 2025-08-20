@@ -67,6 +67,7 @@ public class MainGenerator extends DialogWrapper {
 		setModal(false);
 		setResizable(false);
 		this.init();
+		initVersion();
 		reShow(project);
 		configFilePathButton.setIcon(PluginIcons.yaml);
 		configFilePathButton.addActionListener(e -> chooseConfigPath(project));
@@ -86,7 +87,6 @@ public class MainGenerator extends DialogWrapper {
 		tableNameTextField.addActionListener(e -> setBusinessNameAndPrefix());
 		selectPackageButton.setIcon(PluginIcons.package1);
 		selectPackageButton.addActionListener(e -> choosePackage(project));
-		initVersion();
 	}
 
 	private void initVersion() {
@@ -134,7 +134,9 @@ public class MainGenerator extends DialogWrapper {
 		this.noBaseClassCheckBox.setSelected(instance.isNoBaseClass());
 		this.controllerNoApiCheckBox.setSelected(instance.isControllerNoApi());
 		this.serviceMPCheckBox.setSelected(instance.isServiceMP());
-		this.versionComboBox.setSelectedItem(instance.getVersion());
+		if (StringUtils.isNotEmpty(instance.getVersion())) {
+			this.versionComboBox.setSelectedItem(instance.getVersion());
+		}
 		if (StringUtils.isNotEmpty(projectPath)) {
 			this.projectPathTextField.setText(projectPath);
 			this.projectPathTextField.setToolTipText(projectPath);
@@ -144,6 +146,10 @@ public class MainGenerator extends DialogWrapper {
 			vuePathTextField.setText(vuePath);
 			vuePathTextField.setToolTipText(vuePath);
 			fillModules(project, LocalFileSystem.getInstance().findFileByIoFile(new File(vuePath)));
+			String moduleName = instance.getModuleName();
+			if (StringUtils.isNotBlank(moduleName)) {
+				moduleComboBox.setSelectedItem(moduleName);
+			}
 		}
 		String configPath = instance.getConfigPath();
 		if (StringUtils.isNotEmpty(configPath)) {
@@ -175,8 +181,9 @@ public class MainGenerator extends DialogWrapper {
 		instance.setNoBaseClass(noBaseClassCheckBox.isSelected());
 		instance.setControllerNoApi(controllerNoApiCheckBox.isSelected());
 		instance.setServiceMP(serviceMPCheckBox.isSelected());
-		instance.setVersion(versionComboBox.getSelectedItem().toString());
+		instance.setVersion(versionComboBox.getSelectedItem() + "");
 		instance.setTablePrefix(tablePrefixTextField.getText());
+		instance.setModuleName(moduleComboBox.getSelectedItem() + "");
 		TableGenerate tableGenerate = new TableGenerate(project, LocalFileSystem.getInstance().findFileByIoFile(new File(this.configFilePathTextField.getText())),
 				this.tableNameTextField.getSelectedItem(), moduleComboBox.getSelectedItem());
 		tableGenerate.show();

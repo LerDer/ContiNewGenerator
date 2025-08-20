@@ -18,7 +18,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import top.continew.starter.extension.crud.model.req.IdsReq;
 import top.continew.starter.extension.crud.model.resp.PageResp;
 import top.continew.starter.extension.crud.model.query.PageQuery;
 import org.springdoc.core.annotations.ParameterObject;
@@ -55,12 +59,12 @@ import jakarta.servlet.http.HttpServletResponse;
 </#if>
 public class ${className}Controller<#if !NoApi> extends BaseController<${classNamePrefix}Service, ${classNamePrefix}Resp, ${classNamePrefix}DetailResp, ${classNamePrefix}Query, ${classNamePrefix}Req> </#if>{
 
-		private final ${classNamePrefix}Service ${apiName}Service;
+	private final ${classNamePrefix}Service ${apiName}Service;
 
-		<#if NoApi>
+	<#if NoApi>
 	@Operation(summary = "新增${businessName}")
 	@SaCheckPermission(value = "${apiModuleName}:${apiName}:create")
-	@PostMapping("/create")
+	@PostMapping
 	public ${primaryType} create${className}(@RequestBody @Validated ${classNamePrefix}Req ${apiName}Req) {
 		return ${apiName}Service.create${className}(${apiName}Req);
 	}
@@ -70,44 +74,48 @@ public class ${className}Controller<#if !NoApi> extends BaseController<${classNa
 	@Parameters({
 			@Parameter(name = "${primaryKey!''}", description = "${primaryComment!''}", required = true)
 	})
-	@PostMapping("/delete")
-	public Boolean delete${className}(${primaryType} ${primaryKey}) {
+	@DeleteMapping("/{${primaryKey}}")
+	public Boolean delete${className}(@PathVariable("${primaryKey}") ${primaryType} ${primaryKey}) {
 		return ${apiName}Service.delete${className}(${primaryKey});
+	}
+
+	@Operation(summary = "批量删除${businessName}")
+	@SaCheckPermission(value = "${apiModuleName}:${apiName}:delete")
+	@DeleteMapping
+	public Boolean delete${className}s(@Validated @RequestBody IdsReq idsReq) {
+		return ${apiName}Service.delete${className}s(idsReq.getIds());
 	}
 
 	@Operation(summary = "修改${businessName}")
 	@SaCheckPermission(value = "${apiModuleName}:${apiName}:update")
-	@PostMapping("/update")
-	public ${classNamePrefix}Resp update${className}(@RequestBody @Validated ${classNamePrefix}Req ${apiName}Req) {
-		return ${apiName}Service.update${className}(${apiName}Req);
+	@PutMapping("/{${primaryKey}}")
+	public ${classNamePrefix}Resp update${className}(@PathVariable("${primaryKey}") ${primaryType} ${primaryKey}, @RequestBody @Validated ${classNamePrefix}Req ${apiName}Req) {
+		return ${apiName}Service.update${className}(${primaryKey}, ${apiName}Req);
 	}
 
 	@Operation(summary = "获取${businessName}详情")
-	@SaCheckPermission(value = "${apiModuleName}:${apiName}:query")
-	@Parameters({
-			@Parameter(name = "${primaryKey}", description = "${primaryComment}", required = true)
-	})
-	@GetMapping("/detail")
-	public ${classNamePrefix}Resp get${className}(${primaryType} ${primaryKey}) {
+	@SaCheckPermission(value = "${apiModuleName}:${apiName}:get")
+	@GetMapping("/{${primaryKey}}")
+	public ${classNamePrefix}Resp get${className}(@PathVariable("${primaryKey}") ${primaryType} ${primaryKey}) {
 		return ${apiName}Service.get${className}(${primaryKey});
 	}
 
 	@Operation(summary = "查询${businessName}列表")
-	@SaCheckPermission(value = "${apiModuleName}:${apiName}:query")
+	@SaCheckPermission(value = "${apiModuleName}:${apiName}:list")
 	@GetMapping("/list")
 	public List<${classNamePrefix}Resp> list${className}(@ParameterObject ${classNamePrefix}Query ${apiName}Query) {
 		return ${apiName}Service.list${className}(${apiName}Query);
 	}
 
 	@Operation(summary = "分页查询${businessName}列表")
-	@SaCheckPermission(value = "${apiModuleName}:${apiName}:query")
-	@GetMapping("/page")
+	@SaCheckPermission(value = "${apiModuleName}:${apiName}:list")
+	@GetMapping
 	public PageResp<${classNamePrefix}Resp> page${className}(@ParameterObject ${classNamePrefix}Query ${apiName}Query, @ParameterObject PageQuery pageQuery) {
 		return ${apiName}Service.page${className}(${apiName}Query, pageQuery);
 	}
 
 	@Operation(summary = "导出${businessName}列表")
-	@SaCheckPermission(value = "${apiModuleName}:${apiName}:query")
+	@SaCheckPermission(value = "${apiModuleName}:${apiName}:export")
 	@GetMapping("/export")
 	public void export${className}(@ParameterObject ${classNamePrefix}Query ${apiName}Query, HttpServletResponse response) {
 		${apiName}Service.export${className}(${apiName}Query, response);

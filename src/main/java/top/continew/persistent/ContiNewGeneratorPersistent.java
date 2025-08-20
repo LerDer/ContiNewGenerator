@@ -26,6 +26,8 @@ public class ContiNewGeneratorPersistent implements PersistentStateComponent<Con
 	private String businessName;
 	private String version;
 
+	private String moduleName;
+
 	private boolean override;
 	private boolean noBaseClass;
 	private boolean controllerNoApi;
