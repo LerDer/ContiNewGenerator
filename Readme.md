@@ -39,6 +39,32 @@ Support preview and save table configuration information, regenerate table can s
 
 # 使用方式
 
+![](./doc/1.png)
+
+
+
+![](./doc/2.png)
+
+
+
+![](./doc/3.png)
+
+
+
+![](./doc/4.png)
+
+
+
+![](./doc/5.png)
+
+
+
+![](./doc/6.png)
+
+
+
+![](./doc/7.png)
+
 1. 选择后端项目路径（src目录上一层，就是项目名称的目录）
 2. 选择前端项目路径（同样src上一层目录，就是项目名称的目录），会自动解析src下views目录下的目录作为模块
 3. 选择配置文件，一般是application-dev.yml，会自动解析数据库配置，刷新表名下拉框
