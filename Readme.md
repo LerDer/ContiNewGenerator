@@ -4,33 +4,38 @@
 # 简单说明
 
 <a href="https://gitcode.com/continew/continew-admin">ContiNew Admin</a> Code Generator
-
+<br/>
 Version Support: 3.5.0 | 3.6.0 | 3.7.0 | 4.0.0
-
+<br/>
 Database Support: MySQL, PostgreSQL
-
+<br/>
 Automatic parsing of database configuration information, connecting to the database
-
+<br/>
 Configurable output directories (front-end & back-end)
-
+<br/>
 Generates complete code to specified paths
-
-Uses ContiNew Admin template standards
-
+<br/>
+Optimized code generation based on ContiNew Admin template, can generate ContiNew Admin style code or Mybatis-Plus style code
+<br/>
 Direct code generation with one-click operation
+<br/>
+Support preview and save table configuration information, regenerate table can show last configuration
+<br/>
 
----
 
 为<a href="https://gitcode.com/continew/continew-admin">ContiNew Admin</a>量身定制的代码生成器
-
+<br/>
 支持3.5.0、3.6.0、3.7.0、4.0.0版本。
-
+<br/>
 支持MySQL和PostgreSQL数据库。
-
+<br/>
 根据配置文件自动解析数据库配置信息, 连接数据库
-
+<br/>
 设置前端, 后端目录后, 一键生成前端, 后端代码到指定目录,
-生成的代码采用 ContiNew Admin 项目的代码生成器模板, 生成后可直接使用
+<br/>
+在 ContiNew Admin 项目的代码生成器模板上进行优化，可生成 ContiNew Admin 风格代码，也可生成 Mybatis-Plus 风格代码。
+<br/>
+支持预览，支持保存表生成配置信息，同一张表再次生成可回显上次配置信息
 
 # 使用方式
 
