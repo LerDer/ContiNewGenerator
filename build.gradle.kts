@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "top.continew"
-version = "1.0.1"
+version = "1.0.2"
 
 repositories {
     mavenCentral()
@@ -79,6 +79,10 @@ tasks {
     }
 
     patchPluginXml {
+        changeNotes = """
+        Version 1.0.2 <br/>
+        1、添加自动执行添加菜单的SQL脚本功能  <br/>
+        """
     }
 
 }
