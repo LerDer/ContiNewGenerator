@@ -464,7 +464,7 @@ public class TableGenerate extends DialogWrapper {
 		cfg.setSharedVariable("statics", build.getStaticModels());
 		// 设置模板所在目录
 		cfg.setClassForTemplateLoading(TableGenerate.class, "/templates");
-		AtomicReference<String> sqlFile = new AtomicReference<>("");
+		AtomicReference<File> sqlFile = new AtomicReference<>(null);
 		//String jsonString = JSONObject.toJSONString(dataModel);
 		//System.out.println("jsonString = " + jsonString);
 		//java
@@ -501,7 +501,7 @@ public class TableGenerate extends DialogWrapper {
 							generateFile(cfg, dataModel, templatePath, file);
 						}
 						if (file.getName().endsWith("Menu.sql")) {
-							sqlFile.set(file.getPath());
+							sqlFile.set(file);
 						}
 					});
 		}
