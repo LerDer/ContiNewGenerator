@@ -41,7 +41,7 @@ Support preview and save table configuration information, regenerate table can s
 支持预览，支持保存表生成配置信息，同一张表再次生成可回显上次配置信息
 
 插件地址：
-<a href="https://plugins.jetbrains.com/plugin/28988-continewgenerator">ContiNewGenerator</a>
+<iframe width="384px" height="319px" src="https://plugins.jetbrains.com/embeddable/card/28988"></iframe>
 
 # 使用方式
 
