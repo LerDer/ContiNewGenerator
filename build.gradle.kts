@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "top.continew"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     mavenCentral()
@@ -80,6 +80,8 @@ tasks {
 
     patchPluginXml {
         changeNotes = """
+        Version 1.0.3 <br/>
+        1、根据当前项目版本，自动选择对应版本的模板  <br/>
         Version 1.0.2 <br/>
         1、添加自动执行添加菜单的SQL脚本功能  <br/>
         """

@@ -7,8 +7,12 @@ import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -17,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import org.apache.commons.lang3.StringUtils;
+import org.yaml.snakeyaml.Yaml;
 import top.continew.entity.SqlTable;
 import top.continew.handler.DBTypeEnum;
 import top.continew.icon.PluginIcons;
@@ -233,7 +238,54 @@ public class MainGenerator extends DialogWrapper {
 			configFilePathTextField.setToolTipText(path);
 			instance.setConfigPath(path);
 			fillTableSelect(project, vf);
+			String version = getVersion(path, project);
+			instance.setVersion(version);
 		}
+	}
+
+	private String getVersion(String path, Project project) {
+		try {
+			//判断系统
+			String property = System.getProperties().getProperty("os.name");
+			String mainYml;
+			if (property.contains("Windows")) {
+				//} else if (property.contains("Mac")) {
+				mainYml = path.substring(0, path.lastIndexOf("\\")) + "/application.yml";
+			} else {
+				mainYml = path.substring(0, path.lastIndexOf("/")) + "/application.yml";
+			}
+			if (new File(mainYml).exists()) {
+				List<Map<String, Object>> docsList = new ArrayList<>();
+				Yaml yaml = new Yaml();
+				Iterable<Object> objects = yaml.loadAll(new FileReader(new File(mainYml)));
+				for (Object doc : objects) {
+					if (doc instanceof Map) {
+						docsList.add((Map<String, Object>) doc);
+					}
+				}
+				Optional<Map<String, Object>> first = docsList.stream().filter(dl -> dl.get("application") != null).findFirst();
+				if (first.isPresent()) {
+					Map<String, Object> application = (Map<String, Object>) first.get().get("application");
+					String version = (String) application.get("version");
+					if (version.startsWith("3.5")) {
+						versionComboBox.setSelectedItem("3.5.0");
+					} else if (version.startsWith("3.6")) {
+						versionComboBox.setSelectedItem("3.6.0");
+					} else if (version.startsWith("3.7")) {
+						versionComboBox.setSelectedItem("3.7.0");
+					} else if (version.startsWith("4.")) {
+						versionComboBox.setSelectedItem("4.0.0");
+					} else {
+						versionComboBox.setSelectedItem("3.7.0");
+					}
+				} else {
+					NotificationUtil.showErrorNotification(project, "未找到版本信息", "未找到版本信息");
+				}
+			}
+		} catch (FileNotFoundException e) {
+			NotificationUtil.showErrorNotification(project, "文件不存在", "application.yml文件不存在");
+		}
+		return versionComboBox.getSelectedItem() + "";
 	}
 
 	private void chooseVuePath(Project project) {
