@@ -7,10 +7,14 @@ import top.continew.ui.MainGenerator;
 
 public class ContiNewGenerator extends AnAction {
 
+	private static MainGenerator instance = null;
+
 	@Override
 	public void actionPerformed(AnActionEvent e) {
 		Project project = e.getProject();
-		MainGenerator instance = new MainGenerator(project);
+		if (instance == null) {
+			instance = new MainGenerator(project);
+		}
 		instance.show();
 	}
 }

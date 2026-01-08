@@ -92,7 +92,11 @@ public class TableGenerate extends DialogWrapper {
 		showTable(project, vf, selectedItem);
 		generateButton.setIcon(PluginIcons.success);
 		returnButton.setIcon(PluginIcons.sendToTheLeft);
-		returnButton.addActionListener(e -> dispose());
+		returnButton.addActionListener(e -> {
+			dispose();
+			MainGenerator instance = new MainGenerator(project);
+			instance.show();
+		});
 		generateButton.addActionListener(e -> generateCode(project, selectedItem, moduleSelectItem));
 		previewButton.setIcon(PluginIcons.showLogs);
 		previewButton.addActionListener(e -> previewCode(project, selectedItem, moduleSelectItem));
@@ -124,6 +128,7 @@ public class TableGenerate extends DialogWrapper {
 		Map<String, Object> dataModel = getDataModel(project, selectedItem, moduleSelectItem);
 		PreviewUI previewUI = new PreviewUI(project, dataModel, fileList);
 		previewUI.show();
+		this.dispose();
 	}
 
 	private Map<String, Object> getDataModel(Project project, Object selectedItem, Object moduleSelectItem) {

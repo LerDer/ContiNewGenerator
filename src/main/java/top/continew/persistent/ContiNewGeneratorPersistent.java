@@ -27,6 +27,7 @@ public class ContiNewGeneratorPersistent implements PersistentStateComponent<Con
 	private String version;
 
 	private String moduleName;
+	private String selectTable;
 
 	private boolean override;
 	private boolean noBaseClass;

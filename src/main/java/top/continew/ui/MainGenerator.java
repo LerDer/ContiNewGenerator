@@ -97,7 +97,7 @@ public class MainGenerator extends DialogWrapper {
 		//moduleComboBox.setModel(new DefaultComboBoxModel<>(moduleNames));
 		vueSelectPathButton.setIcon(PluginIcons.vue);
 		vueSelectPathButton.addActionListener(e -> chooseVuePath(project));
-		tableNameTextField.addActionListener(e -> setBusinessNameAndPrefix());
+		tableNameTextField.addActionListener(e -> setBusinessNameAndPrefix(project));
 		selectPackageButton.setIcon(PluginIcons.package1);
 		selectPackageButton.addActionListener(e -> choosePackage(project));
 		donationButton.addActionListener(e -> {
@@ -128,9 +128,12 @@ public class MainGenerator extends DialogWrapper {
 		}
 	}
 
-	private void setBusinessNameAndPrefix() {
+	private void setBusinessNameAndPrefix(Project project) {
 		if (tableNameTextField.getSelectedItem() != null) {
 			String tableNameSelect = tableNameTextField.getSelectedItem().toString();
+
+			ContiNewGeneratorPersistent instance = ContiNewGeneratorPersistent.getInstance(project);
+			instance.setSelectTable(tableNameSelect);
 			if (tableNameSelect.indexOf(" - ") > 0) {
 				String tableComment = tableNameSelect.split(" - ")[1];
 				businessNameTextField.setText(tableComment);
@@ -184,6 +187,10 @@ public class MainGenerator extends DialogWrapper {
 		if (StringUtils.isNotEmpty(packageName)) {
 			this.packageNameTextField.setText(packageName);
 		}
+		String tableNameSelect = tableNameTextField.getSelectedItem() + "";
+		if (StringUtils.isNotBlank(tableNameSelect)) {
+			instance.setSelectTable(tableNameSelect);
+		}
 	}
 
 	private void nextStep(Project project) {
@@ -201,9 +208,12 @@ public class MainGenerator extends DialogWrapper {
 		instance.setVersion(versionComboBox.getSelectedItem() + "");
 		instance.setTablePrefix(tablePrefixTextField.getText());
 		instance.setModuleName(moduleComboBox.getSelectedItem() + "");
-		TableGenerate tableGenerate = new TableGenerate(project, LocalFileSystem.getInstance().findFileByIoFile(new File(this.configFilePathTextField.getText())),
-				this.tableNameTextField.getSelectedItem(), moduleComboBox.getSelectedItem());
+		TableGenerate tableGenerate = new TableGenerate(project,
+				LocalFileSystem.getInstance().findFileByIoFile(new File(this.configFilePathTextField.getText())),
+				this.tableNameTextField.getSelectedItem(),
+				moduleComboBox.getSelectedItem());
 		tableGenerate.show();
+		this.dispose();
 	}
 
 	private void chooseProjectPath(Project project) {

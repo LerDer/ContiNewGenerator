@@ -3,8 +3,10 @@ package top.continew.ui;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.DialogWrapper;
+import com.intellij.openapi.vfs.LocalFileSystem;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import javax.swing.Action;
@@ -15,6 +17,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import top.continew.config.ContiNewConfigPersistent;
 import top.continew.factoty.DataEditorFactory;
+import top.continew.persistent.ContiNewGeneratorPersistent;
 import top.continew.version.TemplateEnum;
 
 public class PreviewUI extends DialogWrapper {
@@ -60,7 +63,15 @@ public class PreviewUI extends DialogWrapper {
 		textPanel.setMaximumSize(new Dimension(965, 750));
 		this.init();
 		this.project = project;
-		cancelButton.addActionListener(e -> dispose());
+		cancelButton.addActionListener(e -> {
+			this.dispose();
+			ContiNewGeneratorPersistent instance = ContiNewGeneratorPersistent.getInstance(project);
+			TableGenerate tableGenerate = new TableGenerate(project,
+					LocalFileSystem.getInstance().findFileByIoFile(new File(instance.getConfigPath())),
+					instance.getSelectTable(),
+					instance.getModuleName());
+		tableGenerate.show();
+		});
 		fileList.addListSelectionListener(e -> {
 			if (!e.getValueIsAdjusting()) {
 				ContiNewConfigPersistent configPersistent1 = ContiNewConfigPersistent.getInstance();
