@@ -43,6 +43,9 @@ public class PluginIcons {
 	public static final Icon forceRefresh = load("/icons/forceRefresh.svg");
 	public static final Icon forceRefresh_dark = load("/icons/forceRefresh_dark.svg");
 
+	public static final Icon clean = load("/icons/clean.svg");
+	public static final Icon clean_dark = load("/icons/clean_dark.svg");
+
 	public static Icon load(String iconPath) {
 		return IconLoader.getIcon(iconPath, PluginIcons.class);
 	}

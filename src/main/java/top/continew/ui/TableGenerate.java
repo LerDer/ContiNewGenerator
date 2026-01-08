@@ -108,7 +108,7 @@ public class TableGenerate extends DialogWrapper {
 	private void forceRefreshTable(Project project, VirtualFile vf, Object selectedItem) {
 		String tableName;
 		if (selectedItem == null) {
-			NotificationUtil.showErrorNotification(project, "错误", "未选择表");
+			NotificationUtil.showErrorNotification(project, "未选择表", "未选择表");
 			return;
 		}
 		if (selectedItem.toString().indexOf(" - ") > 0) {

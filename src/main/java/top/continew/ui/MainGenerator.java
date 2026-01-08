@@ -66,6 +66,7 @@ public class MainGenerator extends DialogWrapper {
 	private JCheckBox serviceMPCheckBox;
 	private JCheckBox noBaseClassCheckBox;
 	private JButton donationButton;
+	private JButton cleanButton;
 
 	public MainGenerator(Project project) {
 		super(project);
@@ -104,6 +105,13 @@ public class MainGenerator extends DialogWrapper {
 			Donation donation = new Donation(project);
 			donation.show();
 		});
+
+		cleanButton.setIcon(PluginIcons.clean);
+		cleanButton.addActionListener(e -> clean());
+	}
+
+	private void clean() {
+		tableNameTextField.setSelectedIndex(-1);
 	}
 
 	private void initVersion() {
@@ -194,6 +202,11 @@ public class MainGenerator extends DialogWrapper {
 	}
 
 	private void nextStep(Project project) {
+		Object selectedItem = tableNameTextField.getSelectedItem();
+		if (selectedItem == null) {
+			NotificationUtil.showErrorNotification(project, "请选择表", "请选择表");
+			return;
+		}
 		ContiNewGeneratorPersistent instance = ContiNewGeneratorPersistent.getInstance(project);
 		instance.setProjectPath(projectPathTextField.getText());
 		instance.setVuePath(vuePathTextField.getText());
@@ -210,7 +223,7 @@ public class MainGenerator extends DialogWrapper {
 		instance.setModuleName(moduleComboBox.getSelectedItem() + "");
 		TableGenerate tableGenerate = new TableGenerate(project,
 				LocalFileSystem.getInstance().findFileByIoFile(new File(this.configFilePathTextField.getText())),
-				this.tableNameTextField.getSelectedItem(),
+				selectedItem,
 				moduleComboBox.getSelectedItem());
 		tableGenerate.show();
 		this.dispose();

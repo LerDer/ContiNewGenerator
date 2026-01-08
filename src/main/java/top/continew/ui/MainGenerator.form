@@ -55,7 +55,7 @@
           </component>
           <component id="a3529" class="top.continew.ui.AutoCompleteComboBox" binding="tableNameTextField">
             <constraints>
-              <grid row="5" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
             </constraints>
@@ -155,6 +155,14 @@
             </constraints>
             <properties>
               <text value="后端项目路径"/>
+            </properties>
+          </component>
+          <component id="8557c" class="javax.swing.JButton" binding="cleanButton">
+            <constraints>
+              <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties>
+              <text value="清空"/>
             </properties>
           </component>
         </children>
