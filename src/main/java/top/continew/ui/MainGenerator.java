@@ -363,6 +363,7 @@ public class MainGenerator extends DialogWrapper {
 			tableNameTextField.addItem(table);
 		}
 		tableNameTextField.getComboKeyHandler().setList(tables);
+		tableNameTextField.setSelectedIndex(-1);
 	}
 
 	@Override
