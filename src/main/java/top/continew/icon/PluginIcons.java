@@ -24,10 +24,10 @@ public class PluginIcons {
 
 	public static final Icon projectDirectory = load("/icons/projectDirectory.svg");
 	public static final Icon projectDirectory_dark = load("/icons/projectDirectory_dark.svg");
-	
+
 	public static final Icon springBoot = load("/icons/springBoot.svg");
 	public static final Icon springBoot_dark = load("/icons/springBoot_dark.svg");
-	
+
 	public static final Icon vue = load("/icons/vue.svg");
 	public static final Icon vue_dark = load("/icons/vue_dark.svg");
 
@@ -40,6 +40,8 @@ public class PluginIcons {
 	public static final Icon donation = load("/icons/donation.svg");
 	public static final Icon donation_enter = load("/icons/donation_enter.svg");
 
+	public static final Icon forceRefresh = load("/icons/forceRefresh.svg");
+	public static final Icon forceRefresh_dark = load("/icons/forceRefresh_dark.svg");
 
 	public static Icon load(String iconPath) {
 		return IconLoader.getIcon(iconPath, PluginIcons.class);

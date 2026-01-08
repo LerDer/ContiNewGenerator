@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "top.continew"
-version = "1.0.3"
+version = "1.0.4"
 
 repositories {
     mavenCentral()
@@ -80,6 +80,8 @@ tasks {
 
     patchPluginXml {
         changeNotes = """
+        Version 1.0.4 <br/>
+        1、增加强制刷新按钮，表结构发生改变时，可以清除缓存，重新获取表结构  <br/>
         Version 1.0.3 <br/>
         1、根据当前项目版本，自动选择对应版本的模板  <br/>
         Version 1.0.2 <br/>

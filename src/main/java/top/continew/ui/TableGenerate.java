@@ -74,6 +74,7 @@ public class TableGenerate extends DialogWrapper {
 	private JButton returnButton;
 	private JButton generateButton;
 	private JButton previewButton;
+	private JButton refreshButton;
 	public static volatile String static_className = "";
 	public static List<TemplateEnum> comonEnums = Arrays.asList(CommonTemplateEnum.values());
 	public static List<TemplateEnum> vueEnums = Arrays.asList(VueTemplateEnum.values());
@@ -95,6 +96,28 @@ public class TableGenerate extends DialogWrapper {
 		generateButton.addActionListener(e -> generateCode(project, selectedItem, moduleSelectItem));
 		previewButton.setIcon(PluginIcons.showLogs);
 		previewButton.addActionListener(e -> previewCode(project, selectedItem, moduleSelectItem));
+		refreshButton.setIcon(PluginIcons.forceRefresh);
+		refreshButton.setToolTipText("清除缓存，从数据库重新获取表结构!");
+		refreshButton.addActionListener(e -> forceRefreshTable(project, vf, selectedItem));
+	}
+
+		private void forceRefreshTable(Project project, VirtualFile vf, Object selectedItem) {
+		String tableName;
+		if (selectedItem == null) {
+			NotificationUtil.showErrorNotification(project, "错误", "未选择表");
+			return;
+		}
+		if (selectedItem.toString().indexOf(" - ") > 0) {
+			tableName = selectedItem.toString().split(" - ")[0];
+		} else {
+			tableName = selectedItem.toString();
+		}
+		TableGeneratePersistent tablePersistent = TableGeneratePersistent.getInstance(project);
+		Map<String, Map<String, FieldProperties>> propertiesMap = tablePersistent.getFieldPropertiesMap();
+		if (propertiesMap != null) {
+			propertiesMap.remove(tableName);
+		}
+		showTable(project, vf, selectedItem);
 	}
 
 	private void previewCode(Project project, Object selectedItem, Object moduleSelectItem) {
