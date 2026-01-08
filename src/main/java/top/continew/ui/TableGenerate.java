@@ -101,7 +101,7 @@ public class TableGenerate extends DialogWrapper {
 		refreshButton.addActionListener(e -> forceRefreshTable(project, vf, selectedItem));
 	}
 
-		private void forceRefreshTable(Project project, VirtualFile vf, Object selectedItem) {
+	private void forceRefreshTable(Project project, VirtualFile vf, Object selectedItem) {
 		String tableName;
 		if (selectedItem == null) {
 			NotificationUtil.showErrorNotification(project, "错误", "未选择表");
