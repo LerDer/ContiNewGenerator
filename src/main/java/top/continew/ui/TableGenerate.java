@@ -313,11 +313,11 @@ public class TableGenerate extends DialogWrapper {
 							fieldProperties.setQueryType(typeEnum.name());
 						} else {
 							fieldConfig.put("queryType", "");
-							fieldProperties.setQueryType("");
+							fieldProperties.setQueryType("NO");
 						}
 					} else {
 						fieldConfig.put("queryType", "");
-						fieldProperties.setQueryType("");
+						fieldProperties.setQueryType("NO");
 					}
 					continue;
 				}
@@ -331,11 +331,11 @@ public class TableGenerate extends DialogWrapper {
 							fieldProperties.setFormShowType(typeEnum.name());
 						} else {
 							fieldConfig.put("formType", "");
-							fieldProperties.setFormShowType("");
+							fieldProperties.setFormShowType("NO");
 						}
 					} else {
 						fieldConfig.put("formType", "");
-						fieldProperties.setFormShowType("");
+						fieldProperties.setFormShowType("NO");
 					}
 					continue;
 				}
@@ -653,7 +653,15 @@ public class TableGenerate extends DialogWrapper {
 					column[11] = formTypeEnum.getDescription();
 					//关联字典
 					String relationDict = properties.getRelationDict();
-					column[12] = StringUtils.isBlank(relationDict) ? GenerateConstant.DEFAULT_TEXT : relationDict;
+					if (StringUtils.isNotBlank(relationDict)) {
+						dictMap.entrySet()
+								.stream()
+								.filter(e -> e.getValue().equals(relationDict))
+								.findFirst()
+								.ifPresent(e -> column[12] = e.getKey());
+					} else {
+						column[12] = GenerateConstant.DEFAULT_TEXT;
+					}
 					data[columns.indexOf(sqlColumn)] = column;
 					column[13] = sqlColumn.getCharacterMaximumLength();
 					column[14] = sqlColumn.isPrimaryKey();
