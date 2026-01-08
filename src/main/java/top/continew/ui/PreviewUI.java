@@ -72,7 +72,7 @@ public class PreviewUI extends DialogWrapper {
 				if (hightLight1) {
 					newEditor = dataEditorFactory.createEditor(selectedValue.getFileName().formatted(dataModel.get("className") + ""), previewCodeString1);
 				} else {
-					newEditor = dataEditorFactory.createEditor("temp.txt", previewCodeString1);
+					newEditor = dataEditorFactory.createEditor(selectedValue.getFileName().formatted(dataModel.get("ClassName") + "") + ".txt", previewCodeString1);
 				}
 				currentEditor = newEditor; // 更新当前Editor引用
 				textPanel.add(newEditor.getComponent(), BorderLayout.CENTER);
@@ -85,7 +85,8 @@ public class PreviewUI extends DialogWrapper {
 				if (currentEditor != null) {
 					String className = dataModel.get("className") + "";
 					String moduleName = dataModel.get("apiModuleName") + "";
-					String text = currentEditor.getDocument().getText();
+					//String text = currentEditor.getDocument().getText();
+					String text = TableGenerate.previewCodeString(dataModel, selected);
 					TableGenerate.generateCode(project, text, selected, className, moduleName);
 				}
 			});

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "top.continew"
-version = "1.0.4"
+version = "1.0.5"
 
 repositories {
     mavenCentral()
@@ -80,6 +80,8 @@ tasks {
 
     patchPluginXml {
         changeNotes = """
+        Version 1.0.5 <br/>
+        1、修复预览页面，选择多个文件生成代码， 生成重复的bug <br/>
         Version 1.0.4 <br/>
         1、增加强制刷新按钮，表结构发生改变时，可以清除缓存，重新获取表结构  <br/>
         Version 1.0.3 <br/>
