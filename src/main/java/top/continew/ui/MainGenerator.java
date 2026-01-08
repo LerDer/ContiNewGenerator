@@ -376,6 +376,10 @@ public class MainGenerator extends DialogWrapper {
 			tableNameTextField.addItem(table);
 		}
 		tableNameTextField.getComboKeyHandler().setList(tables);
+		String selectTable = instance.getSelectTable();
+		if (selectTable != null) {
+			tableNameTextField.setSelectedItem(selectTable);
+		}
 	}
 
 	@Override
